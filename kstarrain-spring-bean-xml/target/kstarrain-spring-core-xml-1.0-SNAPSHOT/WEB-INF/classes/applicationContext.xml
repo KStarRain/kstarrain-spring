@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="testController" class="com.kstarrain.spring.core.xml.controller.TestController">
+    <property name="testService" ref="testServiceImpl"></property>
+  </bean>
+
+  <bean id="testServiceImpl" class="com.kstarrain.spring.core.xml.service.impl.TestServiceImpl">
+    <property name="testDao" ref="test1DaoImpl"></property>
+  </bean>
+
+  <bean id="test1DaoImpl" class="com.kstarrain.spring.core.xml.dao.impl.Test1DaoImpl"> </bean>
+  <bean id="test2DaoImpl" class="com.kstarrain.spring.core.xml.dao.impl.Test2DaoImpl"> </bean>
+</beans>
