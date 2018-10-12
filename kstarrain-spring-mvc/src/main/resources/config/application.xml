@@ -13,11 +13,11 @@
   <!-- 开启springmvc的注解 -->
   <mvc:annotation-driven/>
 
-  <!-- 视图解析器 -->
-  <!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
-    <!--<property name="prefix" value="/WEB-INF/jsp/"/>-->
-    <!--<property name="suffix" value=".jsp"></property>-->
-  <!--</bean>-->
+  <!-- 视图解析器   如果不需要返回页面也可以不配置视图解析器-->
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix" value="/WEB-INF/view/"/>
+    <property name="suffix" value=".jsp"></property>
+  </bean>
 
 
 
