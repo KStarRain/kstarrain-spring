@@ -1,6 +1,0 @@
-com\kstarrain\spring\core\xml\dao\ITestDao.class
-com\kstarrain\spring\core\xml\dao\impl\Test1DaoImpl.class
-com\kstarrain\spring\core\xml\dao\impl\Test2DaoImpl.class
-com\kstarrain\spring\core\xml\controller\TestController.class
-com\kstarrain\spring\core\xml\service\impl\TestServiceImpl.class
-com\kstarrain\spring\core\xml\service\ITestService.class
