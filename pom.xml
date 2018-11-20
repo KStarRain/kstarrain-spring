@@ -14,6 +14,7 @@
         <module>2-kstarrain-spring-bean-annotation</module>
         <module>3-kstarrain-spring-bean-configuration</module>
         <module>4-kstarrain-spring-mvc</module>
+        <module>5-kstarrain-spring-elasticjob</module>
     </modules>
 
 

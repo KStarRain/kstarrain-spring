@@ -10,7 +10,8 @@
   <!-- 注解扫描  扫描路径下带有注解的类，并注册成spring bean -->
   <context:component-scan base-package="com.kstarrain"/>
 
-  <!-- 开启springmvc的注解 -->
+  <!-- 开启springmvc的注解
+  springmvc中配置这个标签默认注册三个bean：RequestMappingHandlerMapping，RequestMappingHandlerAdapter，DefaultHandlerExceptionResolver -->
   <mvc:annotation-driven/>
 
   <!-- 视图解析器   如果不需要返回页面也可以不配置视图解析器-->
