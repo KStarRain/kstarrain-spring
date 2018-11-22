@@ -10,23 +10,10 @@ public class MyElasticJob implements SimpleJob {
 	
 	@Override
 	public void execute(ShardingContext context) {
-		System.out.println("hahaha"+System.currentTimeMillis());
-		// TODO Auto-generated method stub
-		switch (context.getShardingItem()) {
-	        case 0: 
-	        	logger.info("-- UserElasticJob execute context ShardingItem = " + context.getShardingItem()
-	        			+ " | ShardingParameter = " + context.getShardingParameter());
-	            break;
-	        case 1: 
-	        	logger.info("-- UserElasticJob execute context ShardingItem = " + context.getShardingItem()
-	        			+ " | ShardingParameter = " + context.getShardingParameter());
-	            break;
-	        case 2: 
-	        	logger.info("-- UserElasticJob execute context ShardingItem= " + context.getShardingItem()
-	        			+ " | ShardingParameter = " + context.getShardingParameter());
-	            break;
-	        // case n: ...
-	    }
-	}
+
+
+        System.out.println("hahaha");
+        logger.info(context.getJobParameter());
+    }
 
 }

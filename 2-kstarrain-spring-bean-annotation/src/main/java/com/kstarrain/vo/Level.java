@@ -1,7 +1,5 @@
 package com.kstarrain.vo;
 
 public enum Level {
-
-    ONE,TWO
-
+    TRACE, DEBUG, INFO, WARN, ERROR, FATAL;
 }
