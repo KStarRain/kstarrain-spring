@@ -7,16 +7,30 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-  <!-- 注解扫描  扫描路径下带有注解的类，并注册成spring bean -->
+  <!-- spring 可以自动去扫描base-package下面的包或子包下面的Java文件，如果扫描到有Spring的相关注解的类，则把这些类注册为Spring的bean -->
   <context:component-scan base-package="com.kstarrain"/>
 
-  <!-- 开启springmvc的注解
-  springmvc中配置这个标签默认注册三个bean：RequestMappingHandlerMapping，RequestMappingHandlerAdapter，DefaultHandlerExceptionResolver -->
+
+  <!-- https://blog.csdn.net/qq_34155171/article/details/72676993 -->
+  <!-- 中配置这个标签默认注册三个bean：RequestMappingHandlerMapping，RequestMappingHandlerAdapter，DefaultHandlerExceptionResolver
+       是spring MVC为@Controllers分发请求所必须的。
+       并提供了：数据绑定支持，@NumberFormatannotation支持，@DateTimeFormat支持，@Valid支持，读写XML的支持（JAXB），读写JSON的支持（Jackson）。-->
   <mvc:annotation-driven/>
+
+   <!-- 静态资源配置
+        其中 location 中的值代表的是所放的资源文件的位置，
+        mapping的值是代表所访问的url路径， 如 <img src="/images/cat.jpg">  http://localhost:8080/images/cat.jpg  -->
+  <mvc:resources mapping="/images/**" location="WEB-INF/images/"/>
+  <mvc:resources mapping="/js/**" location="WEB-INF/js/" />
+
+
+
 
   <!-- 视图解析器   如果不需要返回页面也可以不配置视图解析器-->
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <!-- 前缀 -->
     <property name="prefix" value="/WEB-INF/view/"/>
+    <!-- 后缀 -->
     <property name="suffix" value=".jsp"></property>
   </bean>
 

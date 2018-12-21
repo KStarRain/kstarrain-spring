@@ -10,9 +10,6 @@ public class MyElasticJob implements SimpleJob {
 	
 	@Override
 	public void execute(ShardingContext context) {
-
-
-        System.out.println("hahaha");
         logger.info(context.getJobParameter());
     }
 

@@ -9,23 +9,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 //@Slf4j
-public class IndexController {
+public class CatController {
 
-    private final Logger logger = LoggerFactory.getLogger(IndexController.class);
+    private final Logger logger = LoggerFactory.getLogger(CatController.class);
 
     @Autowired
     ITestService testService;
 
-    @RequestMapping(value = "/index")
-    public String index() {
-        logger.info("index");
-        return "index";
+    @RequestMapping(value = "/cat")
+    public String cat() {
+        logger.debug("cat debug");
+        logger.info("cat info");
+        return "cat";
     }
 
-    @RequestMapping(value = "/index2")
-    public String index2() {
-        logger.info("index2");
-        return "index";
-    }
+
 
 }
