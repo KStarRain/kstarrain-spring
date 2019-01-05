@@ -9,13 +9,20 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+
     <modules>
         <module>1-kstarrain-spring-bean-xml</module>
         <module>2-kstarrain-spring-bean-annotation</module>
         <module>3-kstarrain-spring-bean-configuration</module>
         <module>4-kstarrain-spring-mvc</module>
         <module>5-kstarrain-spring-elasticjob</module>
-        <module>6-kstarrain-spring-mybatis</module>
+        <module>6-kstarrain-spring-jdbc</module>
+        <module>7-kstarrain-spring-mybatis</module>
     </modules>
 
 
