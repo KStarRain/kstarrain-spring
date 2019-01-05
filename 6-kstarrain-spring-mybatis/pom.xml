@@ -67,7 +67,6 @@
             <artifactId>spring-test</artifactId>
             <version>4.3.7.RELEASE</version>
         </dependency>
-
         <!-- junit单元测试 -->
         <dependency>
             <groupId>junit</groupId>
@@ -82,7 +81,14 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.42</version>
         </dependency>
-    </dependencies>
+
+        <!-- logback -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+   </dependencies>
 
     <build>
         <!-- 打包时生成的名字 -->

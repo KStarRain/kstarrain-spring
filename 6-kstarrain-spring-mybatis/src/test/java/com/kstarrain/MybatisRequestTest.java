@@ -1,4 +1,4 @@
-package com.katarrain;
+package com.kstarrain;
 
 import com.kstarrain.controller.StudentController;
 import org.junit.Test;
