@@ -22,7 +22,6 @@ public class StudentServiceImpl implements IStudentService {
 
 
     public  List<Student> findAllStudent() {
-        System.out.println("执行 service方法");
         List<Student> allStudent = studentMapper.findAllStudent();
         return allStudent;
     }

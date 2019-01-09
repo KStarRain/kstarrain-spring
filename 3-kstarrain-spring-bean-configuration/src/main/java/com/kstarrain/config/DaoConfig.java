@@ -22,6 +22,7 @@ public class DaoConfig  implements ApplicationContextAware {
 
     @Bean
     ITestDao test1DaoImpl(){
+        System.out.println("=======准备注入Test1DaoImpl=======");
         return new Test1DaoImpl();
     }
 
@@ -29,28 +30,29 @@ public class DaoConfig  implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 
+        System.out.println("=======准备注入空参Test2DaoImpl=======");
         BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition("com.kstarrain.dao.impl.Test2DaoImpl");
         DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory)applicationContext.getAutowireCapableBeanFactory();
         defaultListableBeanFactory.registerBeanDefinition("test2DaoImpl",factory.getBeanDefinition());
 
-        ITestDao testDao = (ITestDao)applicationContext.getBean("test2DaoImpl");
+
+
+        ITestDao testDao = applicationContext.getBean("test2DaoImpl",ITestDao.class);
         testDao.test();
 
 
-
-        BeanDefinitionBuilder factory2 = BeanDefinitionBuilder.rootBeanDefinition(Test2DaoImpl.class);
+        System.out.println("=======准备注入有参Test2DaoImpl=======");
+        BeanDefinitionBuilder factory2 = factory;
+//                BeanDefinitionBuilder.rootBeanDefinition(Test2DaoImpl.class);
         factory2.addConstructorArgValue("haha");
         factory2.addConstructorArgValue("123");
         factory2.setInitMethodName("test");
         DefaultListableBeanFactory defaultListableBeanFactory2 = (DefaultListableBeanFactory)applicationContext.getAutowireCapableBeanFactory();
         defaultListableBeanFactory2.registerBeanDefinition("test2DaoImpl",factory2.getBeanDefinition());
 
-        ITestDao testDao2 = (ITestDao)applicationContext.getBean("test2DaoImpl");
+        ITestDao testDao2 = applicationContext.getBean("test2DaoImpl",ITestDao.class);
         testDao2.test();
 
-
-
-        System.out.println("=============================================");
     }
 
 }

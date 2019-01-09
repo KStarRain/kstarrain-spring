@@ -19,8 +19,8 @@ public class MybatisRequestTest extends AbstractJUnit4SpringContextTests {
     public void findAllStudent() {
 
         StudentController studentController = super.applicationContext.getBean("studentController", StudentController.class);
-        List<Student> allStudent = studentController.findAllStudent();
-        System.out.println(allStudent);
+        List<Student> students = studentController.findAllStudent();
+        System.out.println(students);
     }
 
 

@@ -19,10 +19,7 @@ public class StudentController {
     IStudentService studentService;
 
     public List<Student> findAllStudent() {
-        System.out.println("---------------------------------------");
-        System.out.println("执行 controller 方法");
         List<Student> allStudent = studentService.findAllStudent();
-        log.info(JSON.toJSONString(allStudent));
         return allStudent;
     }
 
@@ -30,8 +27,6 @@ public class StudentController {
 
 
     public void insertStudent() {
-        System.out.println("---------------------------------------");
-        System.out.println("执行 controller 方法");
         studentService.insertStudent();
     }
 
