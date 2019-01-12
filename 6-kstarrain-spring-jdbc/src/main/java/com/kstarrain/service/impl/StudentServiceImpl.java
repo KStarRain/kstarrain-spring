@@ -20,7 +20,6 @@ public class StudentServiceImpl implements IStudentService {
     StudentDao studentDao;
 
 
-
     public  List<Student> findAllStudent() {
         List<Student> students = studentDao.findAllStudent();
         return students;

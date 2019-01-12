@@ -1,25 +1,25 @@
 package com.kstarrain.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.kstarrain.pojo.Student;
 import com.kstarrain.service.IStudentService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
 @Controller
+@Slf4j
 public class StudentController {
 
-    private final Logger log = LoggerFactory.getLogger(StudentController.class);
 
     @Autowired
     IStudentService studentService;
 
 
     public List<Student> findAllStudent() {
+        log.info("info findAllStudent");
+        log.debug("debug findAllStudent");
         List<Student> allStudent = studentService.findAllStudent();
         return allStudent;
     }

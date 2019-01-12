@@ -7,33 +7,30 @@
 　　debug: 当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。 -->
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 
-    <!-- 子节点<property> ：用来定义变量值，它有两个属性name和value，通过<property>定义的值会被插入到logger上下文中，可以使“${}”来使用变量。 -->
+    <!-- springboot的彩色日志格式 -->
+    <!--<include resource="org/springframework/boot/logging/logback/defaults.xml" />-->
 
+    <!-- 子节点<property> ：用来定义变量值，它有两个属性name和value，通过<property>定义的值会被插入到logger上下文中，可以使“${}”来使用变量。 -->
     <!-- 定义日志文件的名字  -->
     <property name="LOG_NAME" value="kstarrain-spring-mvc"/>
     <!-- 定义日志文件的存储地址  -->
-    <property name="LOG_HOME" value="/tmp/pord/logs/tomcat/"/>
+    <property name="LOG_HOME" value="/logs/logback/"/>
 
-    <!--  %date{yyyy-MM-dd HH:mm:ss.SSS}：d/date  日期
-          %5level  ：p/le/level  日志级别
+    <!--  %d{yyyy-MM-dd HH:mm:ss.SSS}：d/date  日期
+          %5p  ：p/le/level  日志级别
                  -  可选的格式修饰符位于“%”和转换符之间。第一个可选修饰符是左对齐 标志，符号是减号“-”
                  5  可选的最小宽度 修饰符，用十进制数表示。如果字符小于最小宽度，则左填充或右填充，默认是左填充（即右对齐），填充符为空格。
-          ${PID:- }
           %15.15thread ：t/thread 产生日志的线程名
           %-40.40logger{39}：表示logger名字最长39个字符，否则按照句点分割。
           %m/msg/message ：日志信息
           %n ：换行符
     -->
-    <!--打印到文件的日志格式 -->
-    <property name="FILE_LOG_PATTERN" value="%date{yyyy-MM-dd HH:mm:ss.SSS} %5level ${PID:- } --- [%15.15thread] %-40.40logger : %msg%n" />
-
-
-    <!-- springboot的彩色日志格式 -->
-    <!--<include resource="org/springframework/boot/logging/logback/defaults.xml" />-->
-    <!--<property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(-&#45;&#45;){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}" />-->
-
     <!--打印到控制台的日志格式 -->
-    <property name="CONSOLE_LOG_PATTERN" value="%date{yyyy-MM-dd HH:mm:ss.SSS} %5level ${PID:- } --- [%15.15thread] %-40.40logger : %msg%n" />
+    <property name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p  --- [%15.15t] %-40.40logger{39} : %m%n" />
+
+    <!--打印到文件的日志格式 -->
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p  --- [%15.15t] %-40.40logger{39} : %m%n" />
+
 
 
 
@@ -56,11 +53,18 @@
             <onMismatch>NEUTRAL</onMismatch>
         </filter>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>NEUTRAL</onMismatch>
+        </filter>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>NEUTRAL</onMismatch>
         </filter>
     </appender>
+
+
 
 
     <!-- RollingFileAppender：滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件 -->
@@ -74,16 +78,15 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
             <!-- 必须包含“%i”例如，假设最小值和最大值分别为1和2，命名模式为 xxxx%i.log,会产生归档文件xxxx1.log和xxxx2.log。还可以指定文件压缩选项，例如，xxxx%i.log.gz 或者 xxxx%i.log.zip -->
             <FileNamePattern>${LOG_HOME}/backup/${LOG_NAME}.trace.%i.log.zip</FileNamePattern>
-            <!-- 窗口索引最小值 -->
+            <!-- 归档日志的下标，替换fileNamePattern的%i -->
             <minIndex>1</minIndex>
-            <!-- 窗口索引最大值，当用户指定的窗口过大时，会自动将窗口设置为12 -->
             <maxIndex>10</maxIndex>
         </rollingPolicy>
         <!-- <triggeringPolicy > ： 告知 RollingFileAppender 何时激活滚动 -->
         <!-- SizeBasedTriggeringPolicy 查看当前活动文件的大小，如果超过指定大小会告知RollingFileAppender 触发当前活动文件滚动(生成rollingPolicy-FileNamePattern的名字的文件或压缩文件) -->
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <!-- 活动文件的大小，默认值是10MB -->
-            <maxFileSize>100MB</maxFileSize>
+            <!-- 活动文件的大小，默认值是10MB 该值只做参考，不精准-->
+            <maxFileSize>1GB</maxFileSize>
         </triggeringPolicy>
         <encoder>
             <!--输出日志格式-->
@@ -107,6 +110,7 @@
 
 
 
+
     <appender name="DEBUG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/${LOG_NAME}.debug.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
@@ -115,7 +119,7 @@
             <maxIndex>10</maxIndex>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>100MB</maxFileSize>
+            <maxFileSize>1GB</maxFileSize>
         </triggeringPolicy>
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
@@ -128,6 +132,9 @@
         </filter>
     </appender>
 
+
+
+
     <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/${LOG_NAME}.info.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
@@ -136,7 +143,7 @@
             <maxIndex>10</maxIndex>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>100MB</maxFileSize>
+            <maxFileSize>1GB</maxFileSize>
         </triggeringPolicy>
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
@@ -149,6 +156,9 @@
         </filter>
     </appender>
 
+
+
+
     <appender name="WARN_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/${LOG_NAME}.warn.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
@@ -157,7 +167,7 @@
             <maxIndex>10</maxIndex>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>100MB</maxFileSize>
+            <maxFileSize>1GB</maxFileSize>
         </triggeringPolicy>
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
@@ -170,6 +180,9 @@
         </filter>
     </appender>
 
+
+
+
     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/${LOG_NAME}.error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
@@ -178,7 +191,7 @@
             <maxIndex>10</maxIndex>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>100MB</maxFileSize>
+            <maxFileSize>1GB</maxFileSize>
         </triggeringPolicy>
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
@@ -190,6 +203,9 @@
             <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
+
+
+
 
     <appender name="SQL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/${LOG_NAME}.sql.log</file>
@@ -199,7 +215,7 @@
             <maxIndex>10</maxIndex>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>100MB</maxFileSize>
+            <maxFileSize>1GB</maxFileSize>
         </triggeringPolicy>
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
@@ -212,10 +228,13 @@
         </filter>
     </appender>
 
+
+
+
     <!-- root也是<logger>元素，但是它是根loger。只有一个level属性，应为已经被命名为"root".
         level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，不能设置为INHERITED或者同义词NULL。
         默认是DEBUG -->
-    <root level="info">
+    <root level="debug">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="TRACE_FILE" />
         <appender-ref ref="DEBUG_FILE" />
@@ -225,14 +244,12 @@
     </root>
 
 
-    <!-- logger 用来设置某一个包或者具体的某一个类的日志打印级别、以及指定<appender>。它仅有一个name属性，一个可选的level和一个可选的addtivity属性。
-         name:用来指定受此logger约束的某一个包或者具体的某一个类。
-         level:用来设置打印级别（日志级别），大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，还有一个特俗值INHERITED或者同义词NULL，代表强制执行上级的级别。
-         如果未设置此属性，那么当前loger将会继承上级的级别(此例中会继承root)。
-     addtivity:是否向上级loger传递打印信息。默认是true。-->
-    <logger name="com.kstarrain.mapper" addtivity="false" level="debug">
-        <!--<appender-ref ref="SQL_FILE"/>-->
-    </logger>
+   <!-- logger 用来设置某一个包或者具体的某一个类的日志打印级别、以及指定<appender>。它仅有一个name属性，一个可选的level和一个可选的addtivity属性。
+        name:用来指定受此logger约束的某一个包或者具体的某一个类。
+        level:用来设置打印级别（日志级别），大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，还有一个特俗值INHERITED或者同义词NULL，代表强制执行上级的级别。
+        如果未设置此属性，那么当前loger将会继承上级的级别(此例中会继承root)。
+    addtivity:是否向上级loger传递打印信息。默认是true。-->
+    <logger name="com.kstarrain.mapper" level="debug"></logger>
 
 
     <!-- 综上
