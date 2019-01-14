@@ -15,6 +15,7 @@ public class Test1Controller {
     public  void test() {
         System.out.println("---------------------------------------");
         System.out.println("执行 controller_01 方法");
+        System.out.println(testService);
         testService.test();
     }
 

@@ -22,5 +22,8 @@ public interface StudentDao {
 
     int insertStudent(Student student);
 
+    /** 错误的sql ID_HHHHHHHHHHHHHHHH */
+    int insertStudentError(Student student);
+
 
 }

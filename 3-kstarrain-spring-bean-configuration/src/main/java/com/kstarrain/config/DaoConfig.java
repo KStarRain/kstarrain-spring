@@ -3,6 +3,7 @@ package com.kstarrain.config;
 import com.kstarrain.dao.ITestDao;
 import com.kstarrain.dao.impl.Test1DaoImpl;
 import com.kstarrain.dao.impl.Test2DaoImpl;
+import jdk.nashorn.internal.objects.annotations.Property;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -10,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySources;
 
 /**
  * @author: Dong Yu

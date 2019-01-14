@@ -86,13 +86,30 @@ public class StudentDaoImpl implements StudentDao {
 
         String sql = "insert into t_student(ID, NAME, BIRTHDAY, MONEY, CREATE_DATE, UPDATE_DATE, ALIVE_FLAG)values(?,?,?,?,?,?,?)";
 
-        int update = jdbcTemplate.update(sql, student.getId(),
-                student.getName(),
-                student.getBirthday(),
-                student.getMoney(),
-                student.getCreateDate(),
-                student.getUpdateDate(),
-                student.getAliveFlag());
+        int update = jdbcTemplate.update(sql,   student.getId(),
+                                                student.getName(),
+                                                student.getBirthday(),
+                                                student.getMoney(),
+                                                student.getCreateDate(),
+                                                student.getUpdateDate(),
+                                                student.getAliveFlag());
+        return update;
+    }
+
+
+    /** 错误的sql ID_HHHHHHHHHHHHHHHH */
+    @Override
+    public int insertStudentError(Student student) {
+
+        String sql = "insert into t_student(ID_HHHHHHHHHHHHHHHH, NAME, BIRTHDAY, MONEY, CREATE_DATE, UPDATE_DATE, ALIVE_FLAG)values(?,?,?,?,?,?,?)";
+
+        int update = jdbcTemplate.update(sql,   student.getId(),
+                                                student.getName(),
+                                                student.getBirthday(),
+                                                student.getMoney(),
+                                                student.getCreateDate(),
+                                                student.getUpdateDate(),
+                                                student.getAliveFlag());
         return update;
     }
 }
