@@ -20,6 +20,11 @@
   </bean>
 
 
+  <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+    <property name="transactionManager" ref="transactionManager" />
+  </bean>
+
+
   <!-- 启用事务注解支持(注解事务) -->
   <tx:annotation-driven transaction-manager="transactionManager" />
 

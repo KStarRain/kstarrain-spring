@@ -9,23 +9,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.springframework.beans.BeansException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:config/application.xml"})
 @Slf4j
-public class JdbcRequestTest extends AbstractJUnit4SpringContextTests {
+public class JdbcTemplateTest extends AbstractJUnit4SpringContextTests {
 
     private static String name = "貂蝉' or 1 ='1";
 
@@ -89,7 +84,7 @@ public class JdbcRequestTest extends AbstractJUnit4SpringContextTests {
 
     /** 编程式事务 */
     @Test
-    public void programmingTransaction() throws ParseException {
+    public void programmingTransaction(){
         System.out.println("===============================================================================");
 
         try {
@@ -105,7 +100,7 @@ public class JdbcRequestTest extends AbstractJUnit4SpringContextTests {
 
     /** 注解事务 */
     @Test
-    public void annotatedTransaction() throws ParseException {
+    public void annotatedTransaction(){
         System.out.println("===============================================================================");
 
         try {

@@ -16,8 +16,7 @@
         from
              t_student
         where
-             ALIVE_FLAG = '1'
-             and ID = #{id}
+            ID = #{id}
     </select>
 
     <select id="findAllStudent" resultType="com.kstarrain.pojo.Student">

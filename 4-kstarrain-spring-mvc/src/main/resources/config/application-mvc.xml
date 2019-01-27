@@ -12,7 +12,7 @@
 
 
   <!-- https://blog.csdn.net/qq_34155171/article/details/72676993 -->
-  <!-- 中配置这个标签默认注册三个bean：RequestMappingHandlerMapping，RequestMappingHandlerAdapter，DefaultHandlerExceptionResolver
+  <!-- 配置这个标签默认注册三个bean：RequestMappingHandlerMapping，RequestMappingHandlerAdapter，DefaultHandlerExceptionResolver
        是spring MVC为@Controllers分发请求所必须的。
        并提供了：数据绑定支持，@NumberFormatannotation支持，@DateTimeFormat支持，@Valid支持，读写XML的支持（JAXB），读写JSON的支持（Jackson）。-->
   <mvc:annotation-driven/>

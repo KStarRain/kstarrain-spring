@@ -11,11 +11,15 @@ import java.util.UUID;
 
 public class TestDataUtils {
 
-    public static Student createStudent1() throws ParseException {
+    public static Student createStudent1(){
         Student student1 = new Student();
         student1.setId(UUID.randomUUID().toString().replace("-", ""));
         student1.setName("貂蝉Mm");
-        student1.setBirthday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("1991-09-07 23:24:51"));
+        try {
+            student1.setBirthday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("1991-09-07 23:24:51"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         student1.setMoney(new BigDecimal("1314.98"));
         student1.setCreateDate(new Date());
         student1.setUpdateDate(new Date());

@@ -13,8 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -70,11 +72,9 @@ public class StudentServiceImpl implements IStudentService {
             transactionManager.commit(status);
 
         } catch (Exception e) {
-
             //如果事务提交失败 ，回滚事务
             transactionManager.rollback(status);
-
-            log.error(e.getMessage(),e);
+            throw e;
         }
     }
 
@@ -92,5 +92,6 @@ public class StudentServiceImpl implements IStudentService {
         //插入数据
         studentDao.insertStudent(student2);
     }
+
 
 }

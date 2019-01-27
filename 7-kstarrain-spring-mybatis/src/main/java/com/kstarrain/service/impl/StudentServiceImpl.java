@@ -61,6 +61,7 @@ public class StudentServiceImpl implements IStudentService {
         }
     }
 
+
     /** 编程式事务 */
     @Override
     public void programmingTransaction(Student student1, Student student2) {
@@ -68,6 +69,7 @@ public class StudentServiceImpl implements IStudentService {
         //定义事务
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         //设置事务隔离等级
+//        def.setIsolationLevel(TransactionDefinition.ISOLATION_READ_UNCOMMITTED);
         def.setIsolationLevel(TransactionDefinition.ISOLATION_DEFAULT);
         //设置事务传播方式
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -105,5 +107,27 @@ public class StudentServiceImpl implements IStudentService {
 
         studentMapper.insertStudent(student2);
 
+    }
+
+
+    /** 隔离级别测试 一次事务中 2次查询同一条数据(测试不可重复读) */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void isolationLevel_findById(String id) {
+
+        Student student1 = studentMapper.findStudentById(id);
+        System.out.println(student1.getAliveFlag());
+
+        System.out.println("========================================================================");
+
+        Student student2 = studentMapper.findStudentById(id);
+        System.out.println(student2.getAliveFlag());
+    }
+
+    /** 隔离级别测试 一次事务中 修改同一条数据 */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void isolationLevel_updateById(String id) {
+        studentMapper.deleteStudentById(id);
     }
 }

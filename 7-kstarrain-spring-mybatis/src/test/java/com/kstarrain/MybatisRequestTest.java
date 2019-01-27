@@ -98,4 +98,38 @@ public class MybatisRequestTest extends AbstractJUnit4SpringContextTests {
 
         System.out.println("===============================================================================");
     }
+
+
+    /** 隔离级别测试 一次事务中 2次查询同一条数据(测试不可重复读) */
+    @Test
+    public void isolationLevel_findById() throws ParseException {
+        System.out.println("===============================================================================");
+
+
+        try {
+            IStudentService studentService = super.applicationContext.getBean("studentServiceImpl", IStudentService.class);
+            studentService.isolationLevel_findById("0eeea1902d244721a1a6e88135e91e01");
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+        }
+
+        System.out.println("===============================================================================");
+    }
+
+
+    /** 脏读测试 一次事务中 修改同一条数据 */
+    @Test
+    public void isolationLevel_updateById() throws ParseException {
+        System.out.println("===============================================================================");
+
+        try {
+            IStudentService studentService = super.applicationContext.getBean("studentServiceImpl", IStudentService.class);
+            studentService.isolationLevel_updateById("0eeea1902d244721a1a6e88135e91e01");
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+        }
+
+        System.out.println("===============================================================================");
+    }
+
 }

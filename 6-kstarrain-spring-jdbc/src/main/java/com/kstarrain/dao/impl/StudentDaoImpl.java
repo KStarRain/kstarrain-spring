@@ -2,6 +2,7 @@ package com.kstarrain.dao.impl;
 
 import com.kstarrain.dao.StudentDao;
 import com.kstarrain.pojo.Student;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -96,20 +97,27 @@ public class StudentDaoImpl implements StudentDao {
         return update;
     }
 
-
-    /** 错误的sql ID_HHHHHHHHHHHHHHHH */
     @Override
-    public int insertStudentError(Student student) {
+    public int updateMoneyById(String id) {
+        String sql = "update t_student set MONEY = MONEY + 1,UPDATE_DATE = SYSDATE() where ALIVE_FLAG = '1' and Id = ?";
 
-        String sql = "insert into t_student(ID_HHHHHHHHHHHHHHHH, NAME, BIRTHDAY, MONEY, CREATE_DATE, UPDATE_DATE, ALIVE_FLAG)values(?,?,?,?,?,?,?)";
-
-        int update = jdbcTemplate.update(sql,   student.getId(),
-                                                student.getName(),
-                                                student.getBirthday(),
-                                                student.getMoney(),
-                                                student.getCreateDate(),
-                                                student.getUpdateDate(),
-                                                student.getAliveFlag());
+        int update = jdbcTemplate.update(sql, id);
         return update;
     }
+
+    @Override
+    public Student findStudentById(String id) {
+        Student student = null;
+        String sql = "select * from t_student where ALIVE_FLAG = '1' and ID = ? ";
+        Object[] params = new Object[1];
+        params[0] = id;
+
+        List<Student> students = jdbcTemplate.query(sql, params,this.getStudentRowMapper());
+        if (CollectionUtils.isNotEmpty(students)){
+            student =  students.get(0);
+        }
+        return student;
+    }
+
+
 }
