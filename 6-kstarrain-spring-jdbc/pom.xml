@@ -17,15 +17,25 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>4.3.7.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <!--spring-jdbc-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>4.3.7.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
+
+        <!--spring提供的对AspectJ框架的整合
+            如果spring事务管理是用xml进行配置切面织入范围 <aop:config> 此时aop操作需要用到的aspectjweaver.jar包
+            需要引入此包，否则报错 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
 
         <!-- mysql驱动包 -->
         <dependency>
@@ -38,7 +48,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>4.3.7.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
         <!-- junit单元测试 -->
         <dependency>

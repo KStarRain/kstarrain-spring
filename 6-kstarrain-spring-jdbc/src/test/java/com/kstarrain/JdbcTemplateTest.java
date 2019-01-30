@@ -13,7 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.text.ParseException;
 import java.util.List;
 
 
@@ -89,13 +88,31 @@ public class JdbcTemplateTest extends AbstractJUnit4SpringContextTests {
 
         try {
             IStudentService studentService = super.applicationContext.getBean("studentServiceImpl", IStudentService.class);
-            studentService.programmingTransaction(TestDataUtils.createStudent1(),TestDataUtils.createStudent2());
+            studentService.programmingTransaction();
         } catch (Exception e) {
             log.error(e.getMessage(),e);
         }
 
         System.out.println("===============================================================================");
     }
+
+
+
+    /** xml以方法为单位配置aop事务 */
+    @Test
+    public void xmlTransaction(){
+        System.out.println("===============================================================================");
+
+        try {
+            IStudentService studentService = super.applicationContext.getBean("studentServiceImpl", IStudentService.class);
+            studentService.xmlTransaction();
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+        }
+
+        System.out.println("===============================================================================");
+    }
+
 
 
     /** 注解事务 */
@@ -105,7 +122,22 @@ public class JdbcTemplateTest extends AbstractJUnit4SpringContextTests {
 
         try {
             IStudentService studentService = super.applicationContext.getBean("studentServiceImpl", IStudentService.class);
-            studentService.annotatedTransaction(TestDataUtils.createStudent1(),TestDataUtils.createStudent2());
+            studentService.annotatedTransaction();
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+        }
+
+        System.out.println("===============================================================================");
+    }
+
+    /** 注解事务(错误演示) 注解一定要放在最外面的service上，否则无效*/
+    @Test
+    public void annotatedTransaction_error(){
+        System.out.println("===============================================================================");
+
+        try {
+            IStudentService studentService = super.applicationContext.getBean("studentServiceImpl", IStudentService.class);
+            studentService.annotatedTransaction_error();
         } catch (Exception e) {
             log.error(e.getMessage(),e);
         }

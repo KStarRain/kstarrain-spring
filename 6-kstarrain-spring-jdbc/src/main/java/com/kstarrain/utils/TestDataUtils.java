@@ -27,11 +27,15 @@ public class TestDataUtils {
         return student1;
     }
 
-    public static Student createStudent2() throws ParseException {
+    public static Student createStudent2(){
         Student student2 = new Student();
         student2.setId(UUID.randomUUID().toString().replace("-", ""));
         student2.setName("吕布Gg");
-        student2.setBirthday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("1990-09-07 23:24:51"));
+        try {
+            student2.setBirthday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("1990-09-07 23:24:51"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         student2.setMoney(new BigDecimal("521.98"));
         student2.setCreateDate(new Date());
         student2.setUpdateDate(new Date());
