@@ -24,12 +24,29 @@ public class AOPTest extends AbstractJUnit4SpringContextTests {
 
     /** 注解事务 文档 https://www.cnblogs.com/wlwl/p/10092494.html */
     @Test
-    public void test01(){
+    public void annotatedTransaction(){
         System.out.println("===============================================================================");
         try {
             System.out.println(studentService.getClass().getName());
             System.out.println("--------------------------");
             studentService.annotatedTransaction();
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+        }
+
+        System.out.println("===============================================================================");
+    }
+
+
+
+    /** 注解事务(错误演示)*/
+    @Test
+    public void annotatedTransaction_error(){
+        System.out.println("===============================================================================");
+        try {
+            System.out.println(studentService.getClass().getName());
+            System.out.println("--------------------------");
+            studentService.annotatedTransaction_error();
         } catch (Exception e) {
             log.error(e.getMessage(),e);
         }

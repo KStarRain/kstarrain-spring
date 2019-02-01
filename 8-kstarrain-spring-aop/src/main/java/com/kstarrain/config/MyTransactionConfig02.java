@@ -69,7 +69,7 @@
 //
 //    // 获取代理方法上的事务注解
 //    private MyTransactional getMethodMyAnnotation(ProceedingJoinPoint pjp) throws Exception {
-//        //1. 获取代理对对象的方法
+//        //1. 获取代理对象的方法
 //        String methodName = pjp.getSignature().getName();
 //        //2. 获取目标对象
 //        Class<?> classTarget = pjp.getTarget().getClass();

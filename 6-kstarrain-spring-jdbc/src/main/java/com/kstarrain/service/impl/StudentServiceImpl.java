@@ -139,17 +139,24 @@ public class StudentServiceImpl implements IStudentService {
          *  */
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         //设置事务隔离等级
-        def.setIsolationLevel(TransactionDefinition.ISOLATION_DEFAULT);
+        def.setIsolationLevel(TransactionDefinition.ISOLATION_REPEATABLE_READ);
 
         TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager, def);
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-                studentDao.insertStudent(TestDataUtil.createStudent1());
+
+//                studentDao.insertStudent(TestDataUtil.createStudent1());
+
+                List<Student> allStudent = studentDao.findAllStudent();
+                System.out.println(allStudent.size());
+
+                List<Student> allStudent2 = studentDao.findAllStudent();
+                System.out.println(allStudent2.size());
+
 //                int a = 5/0;
                 propagation_programming02();
 //                int a = 5/0;
-                System.out.println("123");
             }
         });
     }
@@ -160,15 +167,20 @@ public class StudentServiceImpl implements IStudentService {
         //定义事务
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         //设置事务传播方式
-        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_NESTED);
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         //设置事务隔离等级
-        def.setIsolationLevel(TransactionDefinition.ISOLATION_DEFAULT);
+        def.setIsolationLevel(TransactionDefinition.ISOLATION_READ_COMMITTED);
 
         TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager, def);
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-                studentDao.insertStudent(TestDataUtil.createStudent2());
+
+//                studentDao.insertStudent(TestDataUtil.createStudent2());
+
+                List<Student> allStudent = studentDao.findAllStudent();
+                System.out.println(allStudent.size());
+
 //                int a = 5/0;
             }
         });

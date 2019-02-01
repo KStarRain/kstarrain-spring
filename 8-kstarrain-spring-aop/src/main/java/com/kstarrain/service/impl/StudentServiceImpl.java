@@ -31,6 +31,13 @@ public class StudentServiceImpl implements IStudentService {
         studentDao.insertStudent(TestDataUtil.createStudent2());
     }
 
+    /** 注解事务 */
+    @Override
+    public void annotatedTransaction_error(){
+
+        annotatedTransaction();
+    }
+
 
 
 

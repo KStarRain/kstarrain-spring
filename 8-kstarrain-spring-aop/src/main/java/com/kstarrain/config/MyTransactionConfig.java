@@ -39,6 +39,13 @@ public class MyTransactionConfig {
     /** 环绕通知 在方法之前和之后处理事情 */
     @Around(value = "@annotation(myTransactional)")
     public void around(ProceedingJoinPoint pjp, MyTransactional myTransactional) throws Throwable {
+
+        //        //获取真实目标对象
+//        String targetName = pjp.getTarget().getClass().getName();
+//        System.out.println(targetName);
+
+
+
         //如果方法没有注解，不做处理
         if (myTransactional == null){return;}
         //开启事务
@@ -47,6 +54,7 @@ public class MyTransactionConfig {
         pjp.proceed();
         //提交事务
         commit(transactionStatus);
+
     }
 
 
@@ -66,7 +74,7 @@ public class MyTransactionConfig {
 
     // 开启事务
     private TransactionStatus begin(MyTransactional myTransactional) {
-        log.info("开启事务");
+        log.info("==========开启事务==========");
 
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         //设置事务传播方式
@@ -84,13 +92,13 @@ public class MyTransactionConfig {
 
     // 提交事务
     private void commit(TransactionStatus transaction) {
-        log.info("提交事务");
+        log.info("==========提交事务==========");
         transactionManager.commit(transaction);
     }
 
     // 回滚事务
     private void rollback(TransactionStatus transaction) {
-        log.info("回滚事务...");
+        log.info("==========回滚事务==========");
         transactionManager.rollback(transaction);
     }
 
