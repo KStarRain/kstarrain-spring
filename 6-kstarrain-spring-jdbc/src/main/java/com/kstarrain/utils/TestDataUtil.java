@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.UUID;
 
 
-public class TestDataUtils {
+public class TestDataUtil {
 
     public static Student createStudent1(){
         Student student1 = new Student();

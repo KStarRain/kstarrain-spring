@@ -2,13 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/context
-                           http://www.springframework.org/schema/context/spring-context.xsd
-                           http://www.springframework.org/schema/tx
-                           http://www.springframework.org/schema/tx/spring-tx.xsd">
+                           http://www.springframework.org/schema/context/spring-context.xsd">
 
 
   <!-- 加载配置文件 -->
@@ -24,17 +21,10 @@
     <property name="password" value="${jdbc.password}" />
   </bean>
 
-  <!-- spring和MyBatis整合 -->
-  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-    <!-- 数据源 -->
+  <!--  创建jdbcTemplate对象 -->
+  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
     <property name="dataSource" ref="dataSource" />
   </bean>
 
-
-  <!-- 使用mapper扫描器 注意mapper.xml的文件名和mapper的接口名称保持一致，且放在同一个目录 -->
-  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-    <property name="basePackage" value="com.kstarrain.mapper" />
-  </bean>
 
 </beans>

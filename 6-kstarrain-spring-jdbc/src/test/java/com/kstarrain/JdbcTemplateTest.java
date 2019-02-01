@@ -4,7 +4,7 @@ import com.kstarrain.dao.StudentDao;
 import com.kstarrain.pojo.Student;
 
 import com.kstarrain.service.IStudentService;
-import com.kstarrain.utils.TestDataUtils;
+import com.kstarrain.utils.TestDataUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,7 +71,7 @@ public class JdbcTemplateTest extends AbstractJUnit4SpringContextTests {
         try {
             IStudentService studentService = super.applicationContext.getBean("studentServiceImpl", IStudentService.class);
 
-            int num = studentService.insertStudent(TestDataUtils.createStudent1());
+            int num = studentService.insertStudent(TestDataUtil.createStudent1());
             System.out.println(num);
         } catch (Exception e) {
             log.error(e.getMessage(),e);
@@ -115,13 +115,14 @@ public class JdbcTemplateTest extends AbstractJUnit4SpringContextTests {
 
 
 
-    /** 注解事务 */
+    /** 注解事务 文档 https://www.jianshu.com/p/5687e2a38fbc */
     @Test
     public void annotatedTransaction(){
         System.out.println("===============================================================================");
 
         try {
             IStudentService studentService = super.applicationContext.getBean("studentServiceImpl", IStudentService.class);
+            System.out.println(studentService.getClass().getName());
             studentService.annotatedTransaction();
         } catch (Exception e) {
             log.error(e.getMessage(),e);

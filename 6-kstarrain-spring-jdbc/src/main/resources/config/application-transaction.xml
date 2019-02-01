@@ -38,20 +38,20 @@
 
 
   <!-- 配置切面织入的范围,后边要把事务边界定在service层  -->
-  <aop:config>
-    <!-- 配置切点表达式 参考文档：https://www.cnblogs.com/zhangxufeng/p/9160869.html
-         execution(modifiers-pattern? ret-type-pattern declaring-type-pattern?name-pattern(param-pattern) throws-pattern?)
-         这里问号表示当前项可以有也可以没有，其中各项的语义如下：
-           modifiers-pattern：方法的可见性，如public，protected
-           ret-type-pattern：方法的返回值类型，如int，void等
-           declaring-type-pattern：方法所在类的全路径名，如com.spring.Aspect
-           name-pattern：方法名类型，如buisinessService()
-           param-pattern：方法的参数类型，如java.lang.String
-           throws-pattern：方法抛出的异常类型，如java.lang.Exception -->
-    <aop:pointcut id="txPointcut" expression="execution(* com.kstarrain.service.impl.*ServiceImpl.*(..))"  />
-    <!-- 配置切面 : 通知+切点 advice-ref:通知的名称 pointcut-ref:切点的名称 -->
-    <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
-  </aop:config>
+  <!--<aop:config>-->
+    <!--&lt;!&ndash; 配置切点表达式 参考文档：https://www.cnblogs.com/zhangxufeng/p/9160869.html-->
+         <!--execution(modifiers-pattern? ret-type-pattern declaring-type-pattern?name-pattern(param-pattern) throws-pattern?)-->
+         <!--这里问号表示当前项可以有也可以没有，其中各项的语义如下：-->
+           <!--modifiers-pattern：方法的可见性，如public，protected-->
+           <!--ret-type-pattern：方法的返回值类型，如int，void等-->
+           <!--declaring-type-pattern：方法所在类的全路径名，如com.spring.Aspect-->
+           <!--name-pattern：方法名类型，如buisinessService()-->
+           <!--param-pattern：方法的参数类型，如java.lang.String-->
+           <!--throws-pattern：方法抛出的异常类型，如java.lang.Exception &ndash;&gt;-->
+    <!--<aop:pointcut id="txPointcut" expression="execution(* com.kstarrain.service.impl.*ServiceImpl.*(..))"  />-->
+    <!--&lt;!&ndash; 配置切面 : 通知+切点 advice-ref:通知的名称 pointcut-ref:切点的名称 &ndash;&gt;-->
+    <!--<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />-->
+  <!--</aop:config>-->
 
 
   <!-- 第三种:注解配置aop事务   开启事务注解支持 -->

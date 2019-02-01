@@ -2,10 +2,7 @@ package com.kstarrain;
 
 
 import com.kstarrain.dao.StudentDao;
-import com.kstarrain.dao.impl.StudentDaoImpl;
 import com.kstarrain.pojo.Student;
-import com.kstarrain.service.IStudentService;
-import com.kstarrain.utils.TestDataUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,11 +14,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;

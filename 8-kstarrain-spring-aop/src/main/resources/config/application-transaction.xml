@@ -2,14 +2,17 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/tx
-                           http://www.springframework.org/schema/tx/spring-tx.xsd">
+                           http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
   <!-- 为了引入数据源dataSource -->
-  <import resource="classpath:config/application-mybatis.xml"/>
+  <import resource="classpath:config/application-jdbc.xml"/>
 
 
   <!--参考文档 https://blog.csdn.net/liaohaojian/article/details/70139151-->
@@ -20,7 +23,7 @@
   </bean>
 
 
-  <!-- 启用事务注解支持(注解事务) -->
-  <!--<tx:annotation-driven transaction-manager="transactionManager" />-->
+
+
 
 </beans>

@@ -3,7 +3,7 @@ package com.kstarrain;
 import com.kstarrain.dao.StudentDao;
 import com.kstarrain.pojo.Student;
 import com.kstarrain.service.IStudentService;
-import com.kstarrain.utils.TestDataUtils;
+import com.kstarrain.utils.TestDataUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,7 +56,7 @@ public class PropagationTest extends AbstractJUnit4SpringContextTests {
             List<Student> students1 = studentDao.findAllStudent();
             System.out.println("查询结果:"+ students1.size()+ "条");
 
-            int num = studentDao.insertStudent(TestDataUtils.createStudent1());
+            int num = studentDao.insertStudent(TestDataUtil.createStudent1());
             System.out.println("插入结果:"+ students1.size()+ "条");
 
             List<Student> students2 = studentDao.findAllStudent();

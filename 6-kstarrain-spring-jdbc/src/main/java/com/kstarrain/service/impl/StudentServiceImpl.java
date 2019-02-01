@@ -3,7 +3,7 @@ package com.kstarrain.service.impl;
 import com.kstarrain.dao.StudentDao;
 import com.kstarrain.pojo.Student;
 import com.kstarrain.service.IStudentService;
-import com.kstarrain.utils.TestDataUtils;
+import com.kstarrain.utils.TestDataUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,18 +12,10 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -67,12 +59,12 @@ public class StudentServiceImpl implements IStudentService {
         try {
 
             //插入数据
-            studentDao.insertStudent(TestDataUtils.createStudent1());
+            studentDao.insertStudent(TestDataUtil.createStudent1());
 
             int a = 5/0;
 
             //插入数据
-            studentDao.insertStudent(TestDataUtils.createStudent2());
+            studentDao.insertStudent(TestDataUtil.createStudent2());
 
             //事务提交
             transactionManager.commit(status);
@@ -90,12 +82,12 @@ public class StudentServiceImpl implements IStudentService {
     public void xmlTransaction(){
 
         //插入数据
-        studentDao.insertStudent(TestDataUtils.createStudent1());
+        studentDao.insertStudent(TestDataUtil.createStudent1());
 
         int a = 5/0;
 
         //插入数据
-        studentDao.insertStudent(TestDataUtils.createStudent2());
+        studentDao.insertStudent(TestDataUtil.createStudent2());
     }
 
 
@@ -105,12 +97,12 @@ public class StudentServiceImpl implements IStudentService {
     public void annotatedTransaction(){
 
         //插入数据
-        studentDao.insertStudent(TestDataUtils.createStudent1());
+        studentDao.insertStudent(TestDataUtil.createStudent1());
 
         int a = 5/0;
 
         //插入数据
-        studentDao.insertStudent(TestDataUtils.createStudent2());
+        studentDao.insertStudent(TestDataUtil.createStudent2());
     }
 
 
@@ -153,7 +145,7 @@ public class StudentServiceImpl implements IStudentService {
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-                studentDao.insertStudent(TestDataUtils.createStudent1());
+                studentDao.insertStudent(TestDataUtil.createStudent1());
 //                int a = 5/0;
                 propagation_programming02();
 //                int a = 5/0;
@@ -176,7 +168,7 @@ public class StudentServiceImpl implements IStudentService {
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-                studentDao.insertStudent(TestDataUtils.createStudent2());
+                studentDao.insertStudent(TestDataUtil.createStudent2());
 //                int a = 5/0;
             }
         });

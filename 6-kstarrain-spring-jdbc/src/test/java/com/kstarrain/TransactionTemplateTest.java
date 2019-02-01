@@ -1,9 +1,7 @@
 package com.kstarrain;
 
-import com.kstarrain.dao.StudentDao;
 import com.kstarrain.pojo.Student;
 import com.kstarrain.service.IStudentService;
-import com.kstarrain.utils.TestDataUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,21 +10,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
  * @author: DongYu
  * @create: 2019-01-27 16:46
- * @description: 事务模板测试
+ * @description: 事务模板测试 动态代理http://www.cnblogs.com/zby9527/p/6945756.html  https://blog.csdn.net/yhl_jxy/article/details/80635012
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:config/application.xml"})
