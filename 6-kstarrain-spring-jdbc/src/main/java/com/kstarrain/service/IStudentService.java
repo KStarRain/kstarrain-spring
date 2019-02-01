@@ -1,6 +1,7 @@
 package com.kstarrain.service;
 
 import com.kstarrain.pojo.Student;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.util.List;
@@ -18,6 +19,7 @@ public interface IStudentService {
     void xmlTransaction();
 
     /** 注解事务 */
+//    @Transactional(rollbackFor = Exception.class)
     void annotatedTransaction();
 
     /** 注解事务(错误演示)*/

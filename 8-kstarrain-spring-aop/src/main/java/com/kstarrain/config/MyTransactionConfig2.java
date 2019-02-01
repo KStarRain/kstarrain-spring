@@ -10,10 +10,12 @@
 //import org.aspectj.lang.reflect.MethodSignature;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.context.annotation.EnableAspectJAutoProxy;
+//import org.springframework.core.annotation.AnnotationUtils;
 //import org.springframework.stereotype.Component;
 //import org.springframework.transaction.PlatformTransactionManager;
 //import org.springframework.transaction.TransactionStatus;
 //import org.springframework.transaction.support.DefaultTransactionDefinition;
+//import org.springframework.util.ClassUtils;
 //
 //import java.lang.reflect.Method;
 //
@@ -27,7 +29,7 @@
 //@EnableAspectJAutoProxy
 //@Aspect
 //@Slf4j
-//public class MyTransactionConfig02 {
+//public class MyTransactionConfig2 {
 //
 //    @Autowired
 //    private PlatformTransactionManager transactionManager;
@@ -46,14 +48,22 @@
 //    public void around(ProceedingJoinPoint pjp) throws Throwable {
 //        //获取代理方法上的事务注解
 //        MyTransactional myTransactional = getMethodMyAnnotation(pjp);
+//
 //        //如果方法没有注解，不做处理
-//        if (myTransactional == null){return;}
-//        //开启事务
-//        transactionStatus = begin(myTransactional);
+//        if (myTransactional != null){
+//            //开启事务
+//            transactionStatus = begin(myTransactional);
+//        }
+//
 //        //调用目标代理对象方法
 //        pjp.proceed();
-//        //提交事务
-//        commit(transactionStatus);
+//
+//        //如果方法没有注解，不做处理
+//        if (myTransactional != null){
+//            //提交事务
+//            commit(transactionStatus);
+//        }
+//
 //    }
 //
 //
@@ -71,21 +81,20 @@
 //    private MyTransactional getMethodMyAnnotation(ProceedingJoinPoint pjp) throws Exception {
 //        //1. 获取代理对象的方法
 //        String methodName = pjp.getSignature().getName();
-//        //2. 获取目标对象
+//        //2. 获取目标对象(接口的实现类)
 //        Class<?> classTarget = pjp.getTarget().getClass();
 //        //3. 获取目标对象类型
 //        Class<?>[] par = ((MethodSignature) pjp.getSignature()).getParameterTypes();
 //        //4. 获取目标对象方法
 //        Method objMethod = classTarget.getMethod(methodName, par);
 //        //5. 获取该方法上的事务注解
-//        MyTransactional annotation = objMethod.getDeclaredAnnotation(MyTransactional.class);
-//        return annotation;
+//        return objMethod.getDeclaredAnnotation(MyTransactional.class);
 //    }
 //
 //
 //    // 开启事务
 //    private TransactionStatus begin(MyTransactional myTransactional) {
-//        log.info("开启事务");
+//        log.info("==========开启事务==========");
 //
 //        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 //        //设置事务传播方式
@@ -103,13 +112,13 @@
 //
 //    // 提交事务
 //    private void commit(TransactionStatus transaction) {
-//        log.info("提交事务");
+//        log.info("==========提交事务==========");
 //        transactionManager.commit(transaction);
 //    }
 //
 //    // 回滚事务
 //    private void rollback(TransactionStatus transaction) {
-//        log.info("回滚事务");
+//        log.info("==========回滚事务==========");
 //        transactionManager.rollback(transaction);
 //    }
 //

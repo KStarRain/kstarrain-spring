@@ -93,7 +93,7 @@ public class StudentServiceImpl implements IStudentService {
 
     /** 注解事务 */
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class) //该注解放在实现类或者接口上都可以
     public void annotatedTransaction(){
 
         //插入数据

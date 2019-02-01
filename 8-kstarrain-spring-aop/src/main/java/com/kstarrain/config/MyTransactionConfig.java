@@ -44,10 +44,6 @@ public class MyTransactionConfig {
 //        String targetName = pjp.getTarget().getClass().getName();
 //        System.out.println(targetName);
 
-
-
-        //如果方法没有注解，不做处理
-        if (myTransactional == null){return;}
         //开启事务
         transactionStatus = begin(myTransactional);
         //调用目标代理对象方法
