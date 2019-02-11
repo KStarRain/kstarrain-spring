@@ -4,7 +4,7 @@ import com.kstarrain.dao.StudentDao;
 import com.kstarrain.pojo.Student;
 
 import com.kstarrain.service.IStudentService;
-import com.kstarrain.utils.TestDataUtil;
+import com.kstarrain.utils.TestDataUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,7 +71,7 @@ public class JdbcTemplateTest extends AbstractJUnit4SpringContextTests {
         try {
             IStudentService studentService = super.applicationContext.getBean("studentServiceImpl", IStudentService.class);
 
-            int num = studentService.insertStudent(TestDataUtil.createStudent1());
+            int num = studentService.insertStudent(TestDataUtils.createStudent1());
             System.out.println(num);
         } catch (Exception e) {
             log.error(e.getMessage(),e);

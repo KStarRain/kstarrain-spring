@@ -25,6 +25,7 @@
         <module>6-kstarrain-spring-jdbc</module>
         <module>7-kstarrain-spring-mybatis</module>
         <module>8-kstarrain-spring-aop</module>
+        <module>9-kstarrain-spring-redis</module>
     </modules>
 
 

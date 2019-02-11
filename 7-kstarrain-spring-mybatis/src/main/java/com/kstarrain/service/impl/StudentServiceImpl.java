@@ -42,23 +42,8 @@ public class StudentServiceImpl implements IStudentService {
     }
 
     @Override
-    public void insertStudent() {
-
-        System.out.println("执行 service方法");
-
-        try {
-            Student student1 = new Student();
-            student1.setId(UUID.randomUUID().toString().replace("-", ""));
-            student1.setName("貂蝉Mm");
-            student1.setBirthday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("1991-09-07 23:24:51"));
-            student1.setMoney(new BigDecimal("1314.98"));
-            student1.setCreateDate(new Date());
-            student1.setUpdateDate(new Date());
-            student1.setAliveFlag("1");
-            studentMapper.insertStudent(student1);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public void insertStudent(Student student) {
+        studentMapper.insertStudent(student);
     }
 
 
@@ -69,7 +54,6 @@ public class StudentServiceImpl implements IStudentService {
         //定义事务
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         //设置事务隔离等级
-//        def.setIsolationLevel(TransactionDefinition.ISOLATION_READ_UNCOMMITTED);
         def.setIsolationLevel(TransactionDefinition.ISOLATION_DEFAULT);
         //设置事务传播方式
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -110,24 +94,4 @@ public class StudentServiceImpl implements IStudentService {
     }
 
 
-    /** 隔离级别测试 一次事务中 2次查询同一条数据(测试不可重复读) */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void isolationLevel_findById(String id) {
-
-        Student student1 = studentMapper.findStudentById(id);
-        System.out.println(student1.getAliveFlag());
-
-        System.out.println("========================================================================");
-
-        Student student2 = studentMapper.findStudentById(id);
-        System.out.println(student2.getAliveFlag());
-    }
-
-    /** 隔离级别测试 一次事务中 修改同一条数据 */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void isolationLevel_updateById(String id) {
-        studentMapper.deleteStudentById(id);
-    }
 }

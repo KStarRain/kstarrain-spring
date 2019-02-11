@@ -21,6 +21,6 @@
 
 
   <!-- 启用事务注解支持(注解事务) -->
-  <!--<tx:annotation-driven transaction-manager="transactionManager" />-->
+  <tx:annotation-driven transaction-manager="transactionManager" />
 
 </beans>

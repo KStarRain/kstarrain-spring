@@ -9,7 +9,7 @@ public interface IStudentService {
 
     List<Student> findAllStudent();
 
-    void insertStudent();
+    void insertStudent(Student student);
 
     /** 编程式事务 */
     void programmingTransaction(Student student1, Student student2);
@@ -17,9 +17,4 @@ public interface IStudentService {
     /** 注解事务 */
     void annotatedTransaction(Student student1, Student student2);
 
-    /** 隔离级别测试 一次事务中 2次查询同一条数据(测试不可重复读) */
-    void isolationLevel_findById(String id);
-
-    /** 隔离级别测试 一次事务中 修改同一条数据 */
-    void isolationLevel_updateById(String id);
 }
