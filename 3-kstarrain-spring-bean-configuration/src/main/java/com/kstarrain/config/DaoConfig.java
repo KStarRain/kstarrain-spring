@@ -22,7 +22,7 @@ import org.springframework.context.annotation.PropertySources;
 @Configuration
 public class DaoConfig  implements ApplicationContextAware {
 
-    @Bean
+    @Bean(name = "1111")
     ITestDao test1DaoImpl(){
         System.out.println("=======准备注入Test1DaoImpl=======");
         return new Test1DaoImpl();

@@ -11,6 +11,7 @@ public class TestServiceImpl implements ITestService {
 
     @Autowired
     @Qualifier("test2DaoImpl")
+//    @Qualifier("1111")
     private ITestDao iTestDao;
 
 
