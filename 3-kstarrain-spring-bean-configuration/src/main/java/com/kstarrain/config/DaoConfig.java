@@ -22,8 +22,9 @@ import org.springframework.context.annotation.PropertySources;
 @Configuration
 public class DaoConfig  implements ApplicationContextAware {
 
-    @Bean(name = "1111")
-    ITestDao test1DaoImpl(){
+    //不手动定义bean的名字它会默认根据方法名字命名该bean
+    @Bean(name = "test1DaoImpl")
+    ITestDao getTest1DaoImpl(){
         System.out.println("=======准备注入Test1DaoImpl=======");
         return new Test1DaoImpl();
     }
@@ -31,6 +32,8 @@ public class DaoConfig  implements ApplicationContextAware {
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        System.out.println(this.getTest1DaoImpl());
+        System.out.println(this.getTest1DaoImpl());
 
         System.out.println("=======准备注入空参Test2DaoImpl=======");
         BeanDefinitionBuilder factory = BeanDefinitionBuilder.genericBeanDefinition("com.kstarrain.dao.impl.Test2DaoImpl");

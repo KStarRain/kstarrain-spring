@@ -9,10 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-
     <artifactId>4-kstarrain-spring-mvc</artifactId>
     <packaging>war</packaging>
-
 
     <dependencies>
 
@@ -20,7 +18,13 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>4.3.7.RELEASE</version>
+            <version>${spring.version}</version>
+        </dependency>
+        <!-- Spring 对@RequestBody json解析用到的依赖 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.5.2</version>
         </dependency>
 
         <!-- logback -->
@@ -36,7 +40,7 @@
             <version>0.1.4</version>
         </dependency>
 
-        <!--lombok   如果不想每次都写 private final Logger logger = LoggerFactory.getLogger(XXX.class); 可以用注解@Slf4 -->
+        <!-- lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -50,12 +54,7 @@
             <version>1.2.42</version>
         </dependency>
 
-        <!-- Spring 对@RequestBody json解析用到的依赖 -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.5.2</version>
-        </dependency>
+
     </dependencies>
 
 

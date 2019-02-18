@@ -12,7 +12,7 @@
   <context:property-placeholder location="classpath:properties/redis.properties" />
 
 
-  <!-- redis连接池配置-->
+  <!-- redis连接池配置jedis-->
   <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig" >
     <!--最大空闲数-->
     <property name="maxIdle" value="${redis.maxIdle}" />

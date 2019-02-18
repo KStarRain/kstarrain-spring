@@ -9,10 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-
     <artifactId>5-kstarrain-spring-elasticjob</artifactId>
     <packaging>war</packaging>
-
 
     <dependencies>
 
@@ -20,7 +18,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>4.3.7.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <!-- logback -->

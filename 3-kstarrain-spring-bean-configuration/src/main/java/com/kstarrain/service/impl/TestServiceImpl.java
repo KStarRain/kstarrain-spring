@@ -10,12 +10,13 @@ import org.springframework.stereotype.Service;
 public class TestServiceImpl implements ITestService {
 
     @Autowired
-    @Qualifier("test2DaoImpl")
+    @Qualifier("test1DaoImpl")
 //    @Qualifier("1111")
     private ITestDao iTestDao;
 
 
     public  void test() {
+        System.out.println(iTestDao);
         System.out.println("执行 service 方法");
         iTestDao.test();
     }

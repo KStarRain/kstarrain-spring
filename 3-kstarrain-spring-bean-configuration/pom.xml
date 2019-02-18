@@ -9,29 +9,22 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-
     <artifactId>3-kstarrain-spring-bean-configuration</artifactId>
 
     <dependencies>
-        <!-- Spring核心依赖 -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>4.3.7.RELEASE</version>
-        </dependency>
+        <!-- Spring核心依赖(主要包含spring-core,spring-beans,spring-context等) -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>4.3.7.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <!-- Spring test依赖：方便做单元测试和集成测试 -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>4.3.7.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
-
         <!-- junit单元测试 -->
         <dependency>
             <groupId>junit</groupId>

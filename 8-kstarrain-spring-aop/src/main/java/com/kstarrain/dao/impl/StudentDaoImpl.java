@@ -2,7 +2,6 @@ package com.kstarrain.dao.impl;
 
 import com.kstarrain.dao.StudentDao;
 import com.kstarrain.pojo.Student;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
