@@ -1,5 +1,7 @@
 package com.kstarrain.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.kstarrain.mapper.StudentMapper;
 import com.kstarrain.pojo.Student;
 import com.kstarrain.service.IStudentService;
@@ -37,8 +39,15 @@ public class StudentServiceImpl implements IStudentService {
 
 
     public  List<Student> findAllStudent() {
-        List<Student> allStudent = studentMapper.findAllStudent();
-        return allStudent;
+        List<Student> students = studentMapper.findAllStudent();
+        return students;
+    }
+
+    @Override
+    public Page<Student> findAllStudentInPage(int pageNum, int pageSize, boolean count) {
+        PageHelper.startPage(pageNum,pageSize,count);
+        Page<Student> students = (Page<Student>) studentMapper.findAllStudent();
+        return students;
     }
 
     @Override

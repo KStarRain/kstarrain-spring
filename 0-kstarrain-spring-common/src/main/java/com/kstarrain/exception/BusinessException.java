@@ -25,12 +25,12 @@ public class BusinessException extends RuntimeException {
         this.code = code;
     }
 
-    public BusinessException(IErrorCode errorCode) {
+    public BusinessException(ErrorCode errorCode) {
         super(errorCode != null ? errorCode.getDesc() : null);
         this.code = (errorCode != null ? errorCode.getCode() : null);
     }
 
-    public BusinessException(IErrorCode errorCode, Throwable cause) {
+    public BusinessException(ErrorCode errorCode, Throwable cause) {
         super(errorCode != null ? errorCode.getDesc() : null, cause);
         this.code = (errorCode != null ? errorCode.getCode() : null);
     }

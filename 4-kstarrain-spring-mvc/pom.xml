@@ -40,18 +40,11 @@
             <version>0.1.4</version>
         </dependency>
 
-        <!-- lombok -->
+        <!-- common -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.12.4</version>
-        </dependency>
-
-        <!-- 阿里巴巴json转化插件 -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.42</version>
+            <groupId>com.kstarrain</groupId>
+            <artifactId>0-kstarrain-spring-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
 

@@ -190,7 +190,7 @@
 
 
 
-    <root level="info">
+    <root level="debug">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="TRACE_FILE" />
         <appender-ref ref="DEBUG_FILE" />
@@ -199,10 +199,6 @@
         <appender-ref ref="ERROR_FILE" />
     </root>
 
-
-    <!-- 原始为common-logging 经过中间件转化为slf4j可以打印 -->
-    <logger name="org.springframework.jdbc.core.JdbcTemplate" level="debug" />
-    <logger name="org.springframework.jdbc.core.StatementCreatorUtils" level="TRACE" />
 
 
 

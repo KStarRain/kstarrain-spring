@@ -16,6 +16,37 @@
         <spring.version>4.3.7.RELEASE</spring.version>
     </properties>
 
+    <!-- 上传私服地址 -->
+    <distributionManagement>
+        <repository>
+            <id>maven-releases</id>
+            <name>maven-releases</name>
+            <url>http://localhost:8521/nexus/content/repositories/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <name>maven-snapshots</name>
+            <url>http://localhost:8521/nexus/content/repositories/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+
+    <build>
+        <plugins>
+            <!-- 测试插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- 执行test时编码为UTF-8 -->
+                    <argLine>-Dfile.encoding=UTF-8</argLine>
+                    <!-- 忽略单元测试中的错误继续构建工程 -->
+                    <testFailureIgnore>true</testFailureIgnore>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <modules>
         <module>1-kstarrain-spring-bean-xml</module>
         <module>2-kstarrain-spring-bean-annotation</module>
@@ -26,6 +57,7 @@
         <module>7-kstarrain-spring-mybatis</module>
         <module>8-kstarrain-spring-aop</module>
         <module>9-kstarrain-spring-redis</module>
+        <module>0-kstarrain-spring-common</module>
     </modules>
 
 

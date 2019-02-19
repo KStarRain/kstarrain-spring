@@ -1,5 +1,6 @@
 package com.kstarrain;
 
+import com.github.pagehelper.Page;
 import com.kstarrain.pojo.Student;
 import com.kstarrain.service.IStudentService;
 import com.kstarrain.utils.TestDataUtils;
@@ -29,6 +30,21 @@ public class MybatisRequestTest extends AbstractJUnit4SpringContextTests {
 
         List<Student> students = studentService.findAllStudent();
         System.out.println(students.size());
+
+        System.out.println("===============================================================================");
+    }
+
+
+    @Test
+    public void findAllStudentInPage() {
+        System.out.println("===============================================================================");
+
+        Page<Student> students = studentService.findAllStudentInPage(-1,3,true);
+        System.out.println("当前页     ：" + students.getPageNum());
+        System.out.println("每页显示行数：" + students.getPageSize());
+        System.out.println("总页数     ：" + students.getPages());
+        System.out.println("总计数     ：" + students.getTotal());
+        System.out.println("data      ：" + students.getResult().size());
 
         System.out.println("===============================================================================");
     }

@@ -15,9 +15,11 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Key;
 import java.util.*;
@@ -34,6 +36,7 @@ public class RedisTemplateTest extends AbstractJUnit4SpringContextTests {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
 
     @Test
     public void testCommon() {
@@ -59,12 +62,12 @@ public class RedisTemplateTest extends AbstractJUnit4SpringContextTests {
         String KEY = "key_string";
 
         //设置key-value
-        redisTemplate.opsForValue().set(KEY,"貂蝉");
-        System.out.println((String) redisTemplate.opsForValue().get(KEY));
+//        redisTemplate.opsForValue().set(KEY,"貂蝉");
+//        System.out.println((String) redisTemplate.opsForValue().get(KEY));
 
         System.out.println("------------------------------");
 
-        stringRedisTemplate.opsForValue().set(KEY,"貂蝉");
+        stringRedisTemplate.opsForValue().set(KEY,"吕布");
         System.out.println(stringRedisTemplate.opsForValue().get(KEY));
 
         System.out.println("=====================================================================");
@@ -364,6 +367,7 @@ public class RedisTemplateTest extends AbstractJUnit4SpringContextTests {
      * https://www.cnblogs.com/zxf330301/p/6889202.html
      */
     @Test
+    @Transactional
     public void testTransaction_error(){
 
         String KEY = "key_set";
@@ -390,6 +394,7 @@ public class RedisTemplateTest extends AbstractJUnit4SpringContextTests {
      */
     @Test
     public void testTransaction01(){
+        System.out.println("=====================================================================");
 
         String KEY = "key_set";
 
@@ -409,7 +414,7 @@ public class RedisTemplateTest extends AbstractJUnit4SpringContextTests {
 
 //                int a = 5/0;
 
-//                setOperations.add(KEY, "吕布");
+                setOperations.add(KEY, "吕布");
 
                 //提交事务
                 List<Object> exec = redisOperations.exec();
@@ -419,12 +424,13 @@ public class RedisTemplateTest extends AbstractJUnit4SpringContextTests {
                 return null;
             }
         });
-
+        System.out.println("=====================================================================");
     }
 
 
     @Test
     public void testTransaction02(){
+        System.out.println("=====================================================================");
 
         String KEY = "key_set";
 
@@ -450,7 +456,47 @@ public class RedisTemplateTest extends AbstractJUnit4SpringContextTests {
                 return null;
             }
         });
+        System.out.println("=====================================================================");
+    }
 
+
+    /**
+     * 日志等级调为debug发现 如果stringRedisTemplate中设置开启事务，调用RedisCallback时不会释放链接
+     * https://blog.csdn.net/yulio1234/article/details/76417688
+     */
+    @Test
+    public void testTransaction03(){
+        System.out.println("=====================================================================");
+
+        String KEY = "key_set";
+
+        RedisSerializer<String> stringSerializer = stringRedisTemplate.getStringSerializer();
+
+        stringRedisTemplate.execute(new RedisCallback<Object>() {
+            @Override
+            public Object doInRedis(RedisConnection connection) throws DataAccessException {
+
+                //该命令用户高并发时的乐观锁 监视key，当事务执行之前这个key发生了改变，事务会被中断，事务exec返回结果为null
+                connection.watch(stringSerializer.serialize(KEY));
+
+                //开启事务
+                connection.multi();
+
+                connection.sAdd(stringSerializer.serialize(KEY), stringSerializer.serialize("貂蝉"));
+
+//                int a = 5/0;
+
+                connection.sAdd(stringSerializer.serialize(KEY), stringSerializer.serialize("吕布"));
+
+                //提交事务
+                List<Object> exec = connection.exec();
+                if (exec == null){
+                    System.out.println("事务提交失败，原因为提交前key被其他用户修改");
+                }
+                return null;
+            }
+        });
+        System.out.println("=====================================================================");
     }
 
 

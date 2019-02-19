@@ -199,7 +199,7 @@
         <appender-ref ref="ERROR_FILE" />
     </root>
 
-    <logger name="com.kstarrain.mapper" level="info" />
+    <logger name="com.kstarrain.mapper" level="debug" />
 
 
 </configuration>

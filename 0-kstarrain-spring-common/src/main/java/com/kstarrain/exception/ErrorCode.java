@@ -3,7 +3,7 @@ package com.kstarrain.exception;
 /**
  * 业务异常 编码/描述接口
  */
-public interface IErrorCode {
+public interface ErrorCode {
 
     /**
      * 业务异常编码

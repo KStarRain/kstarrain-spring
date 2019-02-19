@@ -36,21 +36,6 @@
     </dependencies>
 
 
-    <!-- 上传私服地址 -->
-    <!--<distributionManagement>-->
-        <!--<repository>-->
-            <!--<id>maven-releases</id>-->
-            <!--<name>maven-releases</name>-->
-            <!--<url>http://localhost:8521/nexus/content/repositories/maven-releases/</url>-->
-        <!--</repository>-->
-        <!--<snapshotRepository>-->
-            <!--<id>maven-snapshots</id>-->
-            <!--<name>maven-snapshots</name>-->
-            <!--<url>http://localhost:8521/nexus/content/repositories/maven-snapshots/</url>-->
-        <!--</snapshotRepository>-->
-    <!--</distributionManagement>-->
-
-
     <build>
 
         <!-- 打包时生成的名字 -->
