@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+
+  <!--  源码解析文档 https://www.cnblogs.com/heavenyes/p/3905844.html
+                     https://www.cnblogs.com/BINGJJFLY/p/7452717.html
+      -->
+
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+
+
+  <!--全局变量添加日志配置文件路径，日志监听器中需要该参数-->
+  <context-param>
+    <param-name>logbackConfigLocation</param-name>
+    <param-value>classpath:logback-file.xml</param-value>
+  </context-param>
+  <!--日志监听器-->
+  <listener>
+    <listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
+  </listener>
+
+
+
+  <servlet>
+    <servlet-name>springmvc</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!-- 如果不设置init-param标签，则必须在/WEB-INF/下创建xxx-servlet.xml文件，其中xxx是servlet-name中配置的名称。  -->
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:config/application-mvc.xml</param-value>
+    </init-param>
+    <!-- 启动时加载 -->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <!--<servlet-mapping>-->
+    <!--<servlet-name>springmvc</servlet-name>-->
+    <!--<url-pattern>*.html</url-pattern>-->
+  <!--</servlet-mapping>-->
+
+  <!--如果"/"拦截了所有请求,那么访问静态资源需要在mvc添加配置,否则会导致静态资源无法访问-->
+  <servlet-mapping>
+    <servlet-name>springmvc</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+
+
+</web-app>
+        

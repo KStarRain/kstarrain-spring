@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+  <!-- 加载配置文件 -->
+  <context:property-placeholder location="classpath:properties/redis.properties" />
+
+
+  <!-- redis连接池配置（使用jedis驱动）-->
+  <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig" >
+    <!--最大空闲数-->
+    <property name="maxIdle" value="${redis.maxIdle}" />
+    <!--连接池的最大数据库连接数  -->
+    <property name="maxTotal" value="${redis.maxTotal}" />
+    <!--最大建立连接等待时间-->
+    <property name="maxWaitMillis" value="${redis.maxWaitMillis}" />
+    <!--释放连接的最小空闲时间 默认1800000毫秒(30分钟)-->
+    <property name="minEvictableIdleTimeMillis" value="${redis.minEvictableIdleTimeMillis}" />
+    <!--每次释放连接的最大数目 如果为负数就是 : 1/abs(n), 默认3-->
+    <property name="numTestsPerEvictionRun" value="${redis.numTestsPerEvictionRun}" />
+    <!--逐出扫描的时间间隔(毫秒) 如果为负数,则不运行逐出线程, 默认-1-->
+    <property name="timeBetweenEvictionRunsMillis" value="${redis.timeBetweenEvictionRunsMillis}" />
+    <!--是否在从池中取出连接前进行检验,如果检验失败,则从池中去除连接并尝试取出另一个-->
+    <property name="testOnBorrow" value="${redis.testOnBorrow}" />
+    <!--在空闲时检查有效性, 默认false  -->
+    <property name="testWhileIdle" value="${redis.testWhileIdle}" />
+  </bean >
+
+
+  <!-- redis连接工厂 redis和spring的整合 -->
+  <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" destroy-method="destroy">
+    <property name="poolConfig" ref="jedisPoolConfig"></property>
+    <!--IP地址 -->
+    <property name="hostName" value="${redis.hostName}"></property>
+    <!--端口号  -->
+    <property name="port" value="${redis.port}"></property>
+    <!--如果Redis设置有密码,没有的话就注释掉下面的配置  -->
+    <!--<property name="password" value="${redis.password}" />-->
+    <!--客户端超时时间单位是毫秒  -->
+    <property name="timeout" value="${redis.timeout}"></property>
+  </bean>
+
+
+  <!-- spring-data-redis默认采用的序列化策略有两种，一种是String的序列化策略，一种是JDK的序列化策略。
+       StringRedisTemplate默认采用的是String的序列化策略，保存的key和value都是采用此策略序列化保存的。
+       RedisTemplate默认采用的是JDK的序列化策略，保存的key和value都是采用此策略序列化保存的。
+       就是因为序列化策略的不同，即使是同一个key用不同的Template去序列化，结果是不同的。所以根据key去删除数据的时候就出现了删除失败的问题。
+    -->
+  <!-- redis 序列化策略 ，通常情况下key值采用String序列化策略， -->
+  <!-- 如果不指定序列化策略，StringRedisTemplate的key和value都将采用String序列化策略； -->
+  <!-- 但是RedisTemplate的key和value都将采用JDK序列化 这样就会出现采用不同template保存的数据不能用同一个template删除的问题 -->
+  <bean id="stringRedisSerializer"  class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+
+  <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+    <!-- redis连接工厂-->
+    <property name="connectionFactory" ref="jedisConnectionFactory" />
+    <!-- 设置key 采用String序列化策略 -->
+    <property name="keySerializer" ref="stringRedisSerializer" />
+    <!-- 设置value 采用String序列化策略 -->
+    <property name="valueSerializer" ref="stringRedisSerializer"/>
+    <!-- 设置在hash数据结构中，hash-key 采用String序列化策略-->
+    <property name="hashKeySerializer" ref="stringRedisSerializer" />
+    <!-- 设置在hash数据结构中，hash-value 采用String序列化策略-->
+    <property name="hashValueSerializer" ref="stringRedisSerializer" />
+    <!--开启事务  -->
+    <property name="enableTransactionSupport" value="false" />
+  </bean>
+
+
+  <bean id="stringRedisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+    <property name="connectionFactory" ref="jedisConnectionFactory" />
+  </bean>
+
+
+</beans>
