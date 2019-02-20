@@ -27,7 +27,7 @@
             <version>1.2.56</version>
         </dependency>
 
-        <!-- logback -->
+        <!-- logback 日志 -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>

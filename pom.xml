@@ -48,16 +48,14 @@
     </build>
 
     <modules>
-        <module>1-kstarrain-spring-bean-xml</module>
-        <module>2-kstarrain-spring-bean-annotation</module>
-        <module>3-kstarrain-spring-bean-configuration</module>
-        <module>4-kstarrain-spring-mvc</module>
-        <module>5-kstarrain-spring-elasticjob</module>
-        <module>6-kstarrain-spring-jdbc</module>
-        <module>7-kstarrain-spring-mybatis</module>
-        <module>8-kstarrain-spring-aop</module>
-        <module>9-kstarrain-spring-redis</module>
         <module>0-kstarrain-spring-common</module>
+        <module>1-kstarrain-spring-bean</module>
+        <module>2-kstarrain-spring-mvc</module>
+        <module>3-kstarrain-spring-jdbc</module>
+        <module>4-kstarrain-spring-mybatis</module>
+        <module>5-kstarrain-spring-aop</module>
+        <module>6-kstarrain-spring-redis</module>
+        <module>8-kstarrain-spring-elasticjob</module>
     </modules>
 
 
