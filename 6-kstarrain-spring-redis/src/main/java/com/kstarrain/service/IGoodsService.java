@@ -1,5 +1,9 @@
 package com.kstarrain.service;
 
+import com.kstarrain.pojo.Goods;
+
+import java.util.List;
+
 /**
  * @author: DongYu
  * @create: 2019-02-17 12:37
@@ -14,4 +18,7 @@ public interface IGoodsService {
      * @param quantity 采购量
      */
     void reduceStockByKey(String buyerId, String goodsKey, int quantity);
+
+
+    List<Goods> findAllGoods(String key) throws InterruptedException;
 }

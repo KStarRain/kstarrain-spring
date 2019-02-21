@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * @author: DongYu
  * @create: 2019-02-17 13:19
- * @description: 该类为了模仿多个线程请求单例的controller
+ * @description: 该类为了模仿多个线程请求单例的controller (测试redia乐观锁)
  */
 @Slf4j
 public class GoodsControllerRunnable implements Runnable{
