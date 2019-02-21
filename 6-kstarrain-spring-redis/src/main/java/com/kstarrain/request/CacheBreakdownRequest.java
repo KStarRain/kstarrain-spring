@@ -19,11 +19,10 @@ import java.util.concurrent.Executors;
 @Slf4j
 public class CacheBreakdownRequest {
 
-    //商品key
     private static String key = "all_goods";
 
 
-    /** 高并发抢购测试  */
+    /** 缓存并发测试  */
     public static void main(String[] args) {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:config/application.xml");
         GoodsController goodsController = applicationContext.getBean("goodsController", GoodsController.class);
