@@ -9,12 +9,16 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>1-kstarrain-spring-bean</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>xml</module>
-        <module>annotation</module>
-    </modules>
+    <artifactId>1-kstarrain-spring-bean-annotation</artifactId>
 
+    <dependencies>
 
+        <!-- Spring核心依赖(主要包含spring-core,spring-beans,spring-context等) -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+    </dependencies>
 </project>

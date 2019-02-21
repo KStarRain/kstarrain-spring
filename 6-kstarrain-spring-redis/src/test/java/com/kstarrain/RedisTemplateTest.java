@@ -31,8 +31,8 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class RedisTemplateTest extends AbstractJUnit4SpringContextTests {
 
-    @Autowired
-    private RedisTemplate redisTemplate;
+//    @Autowired
+//    private RedisTemplate redisTemplate;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -44,14 +44,14 @@ public class RedisTemplateTest extends AbstractJUnit4SpringContextTests {
         String KEY = "key_string";
 
         //设置key的过期时间
-        redisTemplate.expire(KEY,10,TimeUnit.SECONDS);
+        stringRedisTemplate.expire(KEY,10,TimeUnit.SECONDS);
 
         //判断key是否存在
-        Boolean hasKey = redisTemplate.hasKey(KEY);
+        Boolean hasKey = stringRedisTemplate.hasKey(KEY);
         System.out.println(hasKey);
         System.out.println("=====================================================================");
 
-        redisTemplate.delete(KEY);
+        stringRedisTemplate.delete(KEY);
     }
 
 
@@ -81,12 +81,12 @@ public class RedisTemplateTest extends AbstractJUnit4SpringContextTests {
 
         String KEY = "key_student";
 
-        redisTemplate.opsForValue().set(KEY,JSON.toJSONString(TestDataUtils.createStudent1()));
-        String studentStr1 = (String) redisTemplate.opsForValue().get(KEY);
-        Student student1 = JSON.parseObject(studentStr1, Student.class);
-        System.out.println(student1);
-
-        System.out.println("------------------------------");
+//        redisTemplate.opsForValue().set(KEY,JSON.toJSONString(TestDataUtils.createStudent1()));
+//        String studentStr1 = (String) redisTemplate.opsForValue().get(KEY);
+//        Student student1 = JSON.parseObject(studentStr1, Student.class);
+//        System.out.println(student1);
+//
+//        System.out.println("------------------------------");
 
         stringRedisTemplate.opsForValue().set(KEY,JSON.toJSONString(TestDataUtils.createStudent2()));
         String studentStr2 = stringRedisTemplate.opsForValue().get(KEY);
@@ -359,33 +359,43 @@ public class RedisTemplateTest extends AbstractJUnit4SpringContextTests {
 
 
     /**
-     * 事务操作 （一般都无效）
+     * 事务操作 stringRedisTemplate.setEnableTransactionSupport(false)
      * 对于 spring-data-redis 而言，每次操作(例如:get,set,add)都有会从连接池中获取connection
      * 跟踪multi、delete、set等源代码，发现会执行RedisTemplate类中execute()方法
      * 发现 RedisCallback中doInRedis获取的RedisConnection每次都是新的，所以才导致不是一个连接在操作
      *
      * https://www.cnblogs.com/zxf330301/p/6889202.html
+     *
+     * 如果设置 stringRedisTemplate.setEnableTransactionSupport(true)开启事务，会一直使用一个连接，但不自动释放链接;
+     * 需要手动释放链接 RedisConnectionUtils.unbindConnection(stringRedisTemplate.getConnectionFactory());
+     *
      */
     @Test
     @Transactional
     public void testTransaction_error(){
-
+        System.out.println("=====================================================================");
         String KEY = "key_set";
 
-        //该命令用户高并发时的乐观锁 监视key，当事务执行之前这个key发生了改变，事务会被中断，事务exec返回结果为null
-//        redisTemplate.watch(KEY);
+        try {
+            //该命令用户高并发时的乐观锁 监视key，当事务执行之前这个key发生了改变，事务会被中断，事务exec返回结果为null
+            stringRedisTemplate.watch(KEY);
 
-        redisTemplate.multi();
+//            stringRedisTemplate.multi();
 
-        SetOperations setOperations = redisTemplate.opsForSet();
+            SetOperations setOperations = stringRedisTemplate.opsForSet();
 
-        setOperations.add(KEY,"貂蝉");
+            setOperations.add(KEY,"貂蝉");
 
 //        int a = 5/0;
 
-        setOperations.add(KEY,"吕布");
+            setOperations.add(KEY,"吕布");
 
-        List exec = redisTemplate.exec();
+//            List exec = stringRedisTemplate.exec();
+        } finally {
+            /** 手动释放链接 */
+            RedisConnectionUtils.unbindConnection(stringRedisTemplate.getConnectionFactory());
+        }
+        System.out.println("=====================================================================");
     }
 
 

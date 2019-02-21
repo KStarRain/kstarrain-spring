@@ -100,8 +100,8 @@ public class RedisConfig {
         StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
         //redis连接工厂
         stringRedisTemplate.setConnectionFactory(jedisConnectionFactory);
-        //日志等级调为debug发现 如果redisTemplate中设置开启事务，调用RedisCallback时不会释放链接
-//        stringRedisTemplate.setEnableTransactionSupport(true);
+        //日志等级调为debug发现 如果redisTemplate中设置开启事务，调用RedisCallback时不会释放连接 需要手动释放连接RedisConnectionUtils.unbindConnection(stringRedisTemplate.getConnectionFactory());
+        stringRedisTemplate.setEnableTransactionSupport(true);
         return stringRedisTemplate;
     }
 

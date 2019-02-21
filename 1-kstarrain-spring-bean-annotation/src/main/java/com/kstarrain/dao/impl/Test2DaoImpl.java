@@ -1,7 +1,6 @@
 package com.kstarrain.dao.impl;
 
 import com.kstarrain.dao.ITestDao;
-import org.springframework.stereotype.Repository;
 
 public class Test2DaoImpl implements ITestDao {
 

@@ -22,10 +22,6 @@ public class AnnotationRequestTest extends AbstractJUnit4SpringContextTests {
     @Autowired
     private Test2Controller test2Controller;
 
-    @Autowired
-    @Qualifier("test1ServiceImpl")
-    ITestService testService;
-
     @Test
     public void sendRequestTest1() {
         test1Controller.test();
