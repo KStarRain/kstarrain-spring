@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <!-- 设置spring-task的线程池，允许多个定时任务之间并发进行 -->
+    <task:scheduler id="scheduler" pool-size="20" />
+
+    <!-- 全局启用task注解 (@Scheduled) 或者可以不配置这个，在需要的task上配置局部@EnableScheduling -->
+    <task:annotation-driven scheduler="scheduler"/>
+
+
+</beans>
