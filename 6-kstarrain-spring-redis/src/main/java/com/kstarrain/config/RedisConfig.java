@@ -1,6 +1,6 @@
-package com.kstarrain.config.redis;
+package com.kstarrain.config;
 
-import com.kstarrain.config.redis.properties.RedisProperties;
+import com.kstarrain.config.properties.RedisProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

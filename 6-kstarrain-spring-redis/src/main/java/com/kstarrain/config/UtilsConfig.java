@@ -1,9 +1,8 @@
 package com.kstarrain.config;
 
+import com.kstarrain.utils.DistributedLockUtils;
 import com.kstarrain.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
@@ -14,11 +13,14 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  */
 
 @Configuration
-public class RedisUtilsConfig{
+public class UtilsConfig {
 
     @Autowired
-    public RedisUtilsConfig(StringRedisTemplate stringRedisTemplate) {
+    public UtilsConfig(StringRedisTemplate stringRedisTemplate) {
+
         RedisUtils.setStringRedisTemplate(stringRedisTemplate);
+        DistributedLockUtils.setStringRedisTemplate(stringRedisTemplate);
+
     }
 
 

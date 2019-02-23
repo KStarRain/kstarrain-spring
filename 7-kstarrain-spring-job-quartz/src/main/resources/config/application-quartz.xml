@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <!-- 第一种方式定义job，此方式合适仅仅需要调用特定类对象的某个方法。
+        通过SimpleTriggerFactoryBean创建job（顾名思义，JobDetail的bean工厂的方法反射类，FactoryBean<JobDetail>的实现类），
+        由它的对象调用我们要执行的类的方法 -->
+    <bean id="testJob_executeJob1"  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 具体要执行的类，此处的testJob已采用注解的方式注入 -->
+        <property name="targetObject" ref="testJob" />
+        <property name="targetMethod" value="executeJob1" /><!-- 具体要执行的方法 -->
+    </bean>
+
+    <!-- 触发器 -->
+    <bean id="testJob_executeJob1_Trigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="testJob_executeJob1" />
+        <property name="cronExpression" value="0/5 * * ? * *" />
+    </bean>
+
+
+    <bean name="businessJob1" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.kstarrain.job.BusinessJob1" />
+    </bean>
+
+    <bean id="businessJob1_Trigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="businessJob1" />
+        <property name="cronExpression" value="0/5 * * ? * *" />
+    </bean>
+
+
+
+    <!-- Scheduler factory bean to glue together jobDetails and triggers to Configure Quartz Scheduler -->
+    <bean  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="jobDetails">
+            <list>
+                <ref bean="testJob_executeJob1" />
+                <!--<ref bean="businessJob1" />-->
+            </list>
+        </property>
+
+        <property name="triggers">
+            <list>
+                <ref bean="testJob_executeJob1_Trigger" />
+                <!--<ref bean="businessJob1_Trigger" />-->
+            </list>
+        </property>
+    </bean>
+
+
+</beans>

@@ -1,4 +1,4 @@
-package com.kstarrain.config.redis.properties;
+package com.kstarrain.config.properties;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
