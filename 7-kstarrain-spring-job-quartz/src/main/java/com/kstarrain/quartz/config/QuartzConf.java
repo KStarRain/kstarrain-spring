@@ -110,7 +110,7 @@ public class QuartzConf implements ApplicationContextAware {
         factory.addPropertyValue("triggers",cronTriggers.toArray(new CronTrigger[cronTriggers.size()]));
         /**  定时任务Job对象的实例化过程是在Quartz中进行的，而service Bean是由Spring容器管理的，
              Quartz根本就察觉不到而service Bean的存在，故而无法将而service Bean装配到Job对象中
-             因此需要将job bean也纳入到spring容器中  为了可以使用@autowire 注入service类
+             因此需要将job bean也纳入到spring容器中，才可以使用@autowire 注入service类
              参考文档：https://blog.csdn.net/pengjunlee/article/details/78965877 */
         factory.addPropertyValue("jobFactory",quartzSchedulerFactory);
 

@@ -15,17 +15,17 @@ import org.springframework.stereotype.Component;
 public class QuartzSchedulerFactory extends AdaptableJobFactory {
 
 
-    // 需要使用这个BeanFactory对Qurartz创建好Job实例进行后续处理，属于Spring的技术范畴
+    // 需要使用这个Spring的自动装载Factory对Qurartz创建好jobDetail实例进行后续处理
     @Autowired
     private AutowireCapableBeanFactory capableBeanFactory;
 
     @Override
     protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception {
 
-        // 首先，调用父类的方法创建好Quartz所需的Job实例
-        Object jobInstance = super.createJobInstance(bundle);
-        // 然后，使用BeanFactory为创建好的Job实例进行属性自动装配并将其纳入到Spring容器的管理之中，属于Spring的技术范畴.
-        capableBeanFactory.autowireBean(jobInstance);
-        return jobInstance;
+        // 首先，调用父类的方法创建Quartz所需的JobDetail实例
+        Object jobDetailInstance = super.createJobInstance(bundle);
+        // 然后，使用Spring的自动装载Factory为创建好的JobDetail实例进行属性自动装配并将其纳入到Spring容器的管理之中
+        capableBeanFactory.autowireBean(jobDetailInstance);
+        return jobDetailInstance;
     }
 }
