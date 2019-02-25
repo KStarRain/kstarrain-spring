@@ -1,7 +1,9 @@
 package com.kstarrain.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.kstarrain.service.ITestService;
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.JobDataMap;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -9,16 +11,18 @@ import org.springframework.stereotype.Service;
 public class TestServiceImpl implements ITestService {
 
 
-    public  void test1() throws InterruptedException {
-        log.info(Thread.currentThread().getName()  + "开始执行作业逻辑task1");
-        Thread.sleep(7000L);
-        log.info(Thread.currentThread().getName()  + "结束执行作业逻辑task1");
+    public  void test1(JobDataMap jobDataMap) throws InterruptedException {
+        log.info("开始执行作业逻辑task1");
+        System.out.println(JSON.toJSONString(jobDataMap));
+        Thread.sleep(10000L);
+        log.info("结束执行作业逻辑task1");
     }
 
     @Override
-    public void test2() {
-        log.info(Thread.currentThread().getName()  + "开始执行作业逻辑task1");
-        log.info(Thread.currentThread().getName()  + "结束执行作业逻辑task2");
+    public void test2(JobDataMap jobDataMap) {
+        log.info("开始执行作业逻辑task2");
+        System.out.println(JSON.toJSONString(jobDataMap));
+        log.info("结束执行作业逻辑task2");
     }
 
 }

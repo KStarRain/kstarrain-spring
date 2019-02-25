@@ -28,19 +28,20 @@
             <version>${spring.version}</version>
         </dependency>
 
-         <!-- Quartz   https://blog.csdn.net/defonds/article/details/49496895  -->
+         <!-- Quartz   https://blog.csdn.net/defonds/article/details/49496895
+            https://blog.csdn.net/xlgdst/article/details/79104273 -->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
             <version>2.3.0</version>
         </dependency>
 
-        <!--&lt;!&ndash; quartz-web可视化界面  参考地址:https://blog.csdn.net/qxc1281/article/details/76359246 &ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>com.github.quartzweb</groupId>-->
-            <!--<artifactId>quartz-web</artifactId>-->
-            <!--<version>1.2.0</version>-->
-        <!--</dependency>-->
+        <!-- quartz-web可视化界面  参考地址:https://blog.csdn.net/qxc1281/article/details/76359246 -->
+        <dependency>
+            <groupId>com.github.quartzweb</groupId>
+            <artifactId>quartz-web</artifactId>
+            <version>1.2.0</version>
+        </dependency>
 
         <!-- Spring-web依赖 (已经包含了核心依赖等)-->
         <dependency>
@@ -49,5 +50,11 @@
             <version>${spring.version}</version>
         </dependency>
 
+        <!-- common -->
+        <dependency>
+            <groupId>com.kstarrain</groupId>
+            <artifactId>0-kstarrain-spring-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>
