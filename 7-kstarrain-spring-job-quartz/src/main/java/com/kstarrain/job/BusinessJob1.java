@@ -1,5 +1,6 @@
 package com.kstarrain.job;
 
+import com.kstarrain.quartz.annotation.QuartzScheduledOnClass;
 import com.kstarrain.service.ITestService;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.DisallowConcurrentExecution;
@@ -21,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Slf4j
 @DisallowConcurrentExecution //禁止一个工作任务还没执行完，下一个工作（同jobkey）就开始执行
-//@QuartzScheduledOnClass(cron = "0/1 * * * * ?",jobParameter = "{\"name\":\"貂蝉\"}")
+@QuartzScheduledOnClass(cron = "0/1 * * * * ?",jobParameter = "{\"name\":\"貂蝉\"}")
 public class BusinessJob1 implements Job {
 
     @Autowired

@@ -28,7 +28,7 @@ public @interface QuartzScheduledOnMethod {
 
 
 	/**
-	 * 单个作业内是否支持并发
+	 * 同一个作业内是否支持并发
 	 * @return
 	 */
 	boolean concurrent() default false;

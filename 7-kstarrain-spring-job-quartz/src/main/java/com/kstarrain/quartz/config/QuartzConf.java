@@ -78,75 +78,6 @@ public class QuartzConf implements ApplicationContextAware {
     }
 
 
-	private void parserQuartzScheduledOnMethod(ApplicationContext applicationContext, List<JobDetail> jobDetails, List<Trigger> cronTriggers) {
-
-        //获取标记了@EnableQuartzScheduledOnMethod注解的类名
-        Map<String, Object> beanMap = applicationContext.getBeansWithAnnotation(EnableQuartzScheduledOnMethod.class);
-
-        for (Map.Entry<String, Object> objectEntry : beanMap.entrySet()) {
-            //bean的名字
-            String beanName = objectEntry.getKey();
-            Object targetObject = objectEntry.getValue();
-
-            // 获取该类的方法
-            Method[] methods = targetObject.getClass().getDeclaredMethods();
-            for (Method method : methods) {
-                // 如果方法上标记了@QuartzScheduledOnMethod注解
-                if (method.isAnnotationPresent(QuartzScheduledOnMethod.class)){
-                    QuartzScheduledOnMethod conf = method.getAnnotation(QuartzScheduledOnMethod.class);
-                    String methodName = method.getName();
-
-                    String jobName = StringUtils.hasText(conf.jobName()) ? conf.jobName() : beanName + "_" + methodName;
-                    String jobGroup = conf.jobGroup();
-                    String jobKey = jobName + "." + jobGroup;
-                    boolean concurrent = getEnvironmentBooleanValue(jobKey, "concurrent",conf.concurrent());
-                    String cron = getEnvironmentStringValue(jobKey, "cron", conf.cron());
-
-                    /** 作业程序 */
-                    MethodInvokingJobDetailFactoryBean jobDetailFactoryBean = new MethodInvokingJobDetailFactoryBean();
-                    jobDetailFactoryBean.setConcurrent(concurrent);
-                    jobDetailFactoryBean.setTargetObject(targetObject);
-                    jobDetailFactoryBean.setTargetMethod(methodName);
-                    jobDetailFactoryBean.setName(jobName);
-                    jobDetailFactoryBean.setGroup(jobGroup);
-
-                    //内部将jobDetails赋值
-                    try {
-                        jobDetailFactoryBean.afterPropertiesSet();
-                    } catch (Exception e) {
-                        log.error(e.getMessage(),e);
-                    }
-
-                    //获取jobDetail
-                    JobDetail jobDetail = jobDetailFactoryBean.getObject();
-
-
-
-                    /** cron触发器 */
-                    CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
-        			cronTriggerFactoryBean.setJobDetail(jobDetail);
-                    cronTriggerFactoryBean.setName(jobName);
-                    cronTriggerFactoryBean.setGroup(jobGroup);
-                    cronTriggerFactoryBean.setCronExpression(cron);
-
-                    try {
-                        //内部将cronTrigger赋值
-                        cronTriggerFactoryBean.afterPropertiesSet();
-                    } catch (ParseException e) {
-                        log.error(e.getMessage(),e);
-                    }
-                    //获取cronTrigger
-                    CronTrigger cronTrigger = cronTriggerFactoryBean.getObject();
-
-                    jobDetails.add(jobDetail);
-                    cronTriggers.add(cronTrigger);
-                }
-            }
-
-        }
-	}
-
-
     /** 解析@QuartzScheduledOnClass注解 */
 	private void parserQuartzScheduledOnClass(ApplicationContext applicationContext, List<JobDetail> jobDetails, List<Trigger> cronTriggers) {
 
@@ -208,7 +139,75 @@ public class QuartzConf implements ApplicationContextAware {
 	}
 
 
-	/**
+    private void parserQuartzScheduledOnMethod(ApplicationContext applicationContext, List<JobDetail> jobDetails, List<Trigger> cronTriggers) {
+
+        //获取标记了@EnableQuartzScheduledOnMethod注解的类名
+        Map<String, Object> beanMap = applicationContext.getBeansWithAnnotation(EnableQuartzScheduledOnMethod.class);
+
+        for (Map.Entry<String, Object> objectEntry : beanMap.entrySet()) {
+            //bean的名字
+            String beanName = objectEntry.getKey();
+            Object targetObject = objectEntry.getValue();
+
+            // 获取该类的方法
+            Method[] methods = targetObject.getClass().getDeclaredMethods();
+            for (Method method : methods) {
+                // 如果方法上标记了@QuartzScheduledOnMethod注解
+                if (method.isAnnotationPresent(QuartzScheduledOnMethod.class)){
+                    QuartzScheduledOnMethod conf = method.getAnnotation(QuartzScheduledOnMethod.class);
+                    String methodName = method.getName();
+
+                    String jobName = StringUtils.hasText(conf.jobName()) ? conf.jobName() : beanName + "_" + methodName;
+                    String jobGroup = conf.jobGroup();
+                    String jobKey = jobName + "." + jobGroup;
+                    boolean concurrent = getEnvironmentBooleanValue(jobKey, "concurrent",conf.concurrent());
+                    String cron = getEnvironmentStringValue(jobKey, "cron", conf.cron());
+
+                    /** 作业程序 */
+                    MethodInvokingJobDetailFactoryBean jobDetailFactoryBean = new MethodInvokingJobDetailFactoryBean();
+                    jobDetailFactoryBean.setConcurrent(concurrent);
+                    jobDetailFactoryBean.setTargetObject(targetObject);
+                    jobDetailFactoryBean.setTargetMethod(methodName);
+                    jobDetailFactoryBean.setName(jobName);
+                    jobDetailFactoryBean.setGroup(jobGroup);
+
+                    //内部将jobDetails赋值
+                    try {
+                        jobDetailFactoryBean.afterPropertiesSet();
+                    } catch (Exception e) {
+                        log.error(e.getMessage(),e);
+                    }
+
+                    //获取jobDetail
+                    JobDetail jobDetail = jobDetailFactoryBean.getObject();
+
+
+
+                    /** cron触发器 */
+                    CronTriggerFactoryBean cronTriggerFactoryBean = new CronTriggerFactoryBean();
+                    cronTriggerFactoryBean.setJobDetail(jobDetail);
+                    cronTriggerFactoryBean.setName(jobName);
+                    cronTriggerFactoryBean.setGroup(jobGroup);
+                    cronTriggerFactoryBean.setCronExpression(cron);
+
+                    try {
+                        //内部将cronTrigger赋值
+                        cronTriggerFactoryBean.afterPropertiesSet();
+                    } catch (ParseException e) {
+                        log.error(e.getMessage(),e);
+                    }
+                    //获取cronTrigger
+                    CronTrigger cronTrigger = cronTriggerFactoryBean.getObject();
+
+                    jobDetails.add(jobDetail);
+                    cronTriggers.add(cronTrigger);
+                }
+            }
+        }
+    }
+
+
+    /**
 	 * 获取配置中的任务属性值，environment没有就用注解中的值
 	 * @param jobName		任务名称
 	 * @param fieldName		属性名称
