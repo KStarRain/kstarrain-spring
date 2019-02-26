@@ -18,9 +18,9 @@
         <module>4-kstarrain-spring-mybatis</module>
         <module>5-kstarrain-spring-aop</module>
         <module>6-kstarrain-spring-redis</module>
-        <module>8-kstarrain-spring-elasticjob</module>
         <module>7-kstarrain-spring-job-task</module>
         <module>7-kstarrain-spring-job-quartz</module>
+        <module>7-kstarrain-spring-job-elasticjob</module>
     </modules>
 
     <properties>

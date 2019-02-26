@@ -5,6 +5,6 @@
     <title>Title</title>
 </head>
 <body>
-    spring-quartz欢迎页面
+    spring-elasticjob欢迎页面
 </body>
 </html>

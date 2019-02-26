@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:reg="http://www.dangdang.com/schema/ddframe/reg"
+       xmlns:job="http://www.dangdang.com/schema/ddframe/job"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.dangdang.com/schema/ddframe/reg
+                        http://www.dangdang.com/schema/ddframe/reg/reg.xsd
+                        http://www.dangdang.com/schema/ddframe/job
+                        http://www.dangdang.com/schema/ddframe/job/job.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 加载配置文件 -->
+    <context:property-placeholder location="classpath:properties/elasticjob.properties" />
+
+
+    <!--配置作业注册中心 -->
+    <reg:zookeeper id="zookeeperRegistryCenter" server-lists="${elasticJob.zookeeper.addresses}" namespace="${elasticJob.zookeeper.namespace}" />
+
+    <!-- 配置定时任务参数 -->
+    <job:simple id="MyElasticJob_01" class="com.kstarrain.job.BusinessJob1" cron="0/1 * * * * ?" overwrite="true" sharding-total-count="1" registry-center-ref="zookeeperRegistryCenter" />
+
+
+
+
+</beans>
