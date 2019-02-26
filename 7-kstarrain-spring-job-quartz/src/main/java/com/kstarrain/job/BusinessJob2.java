@@ -1,12 +1,10 @@
 package com.kstarrain.job;
 
-import com.kstarrain.quartz.annotation.QuartzScheduled;
+import com.kstarrain.quartz.annotation.EnableQuartzScheduledOnMethod;
+import com.kstarrain.quartz.annotation.QuartzScheduledOnMethod;
 import com.kstarrain.service.ITestService;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.DisallowConcurrentExecution;
-import org.quartz.JobExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.quartz.QuartzJobBean;
 
 /**
  * @author: DongYu
@@ -20,18 +18,16 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
  *
  */
 @Slf4j
-@DisallowConcurrentExecution //禁止一个工作任务还没执行完，下一个工作（同jobkey）就开始执行
-@QuartzScheduled(jobName = "BusinessJob2",cron = "0/1 * * * * ?",jobParameter = "{\"name\":\"吕布\"}")
-public class BusinessJob2 extends QuartzJobBean {
+@EnableQuartzScheduledOnMethod
+public class BusinessJob2 {
 
     @Autowired
     private ITestService testService;
 
-
-    @Override
-    protected void executeInternal(JobExecutionContext jobExecutionContext){
+    @QuartzScheduledOnMethod(cron = "0/1 * * * * ?")
+    public void execute123(){
         try {
-            testService.test2(jobExecutionContext.getJobDetail().getJobDataMap());
+            testService.test2();
         } catch (Exception e) {
             log.error(e.getMessage(),e);
         }

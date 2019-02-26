@@ -6,5 +6,5 @@ public interface ITestService {
 
     void test1(JobDataMap jobDataMap) throws InterruptedException;
 
-    void test2(JobDataMap jobDataMap) throws InterruptedException;
+    void test2() throws InterruptedException;
 }

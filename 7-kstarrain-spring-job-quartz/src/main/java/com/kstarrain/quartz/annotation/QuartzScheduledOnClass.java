@@ -8,21 +8,20 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * quartz 注解配置类
- * 
- * <p>任务的配置只需要在Job类上加上此注解即可<p>
- *
+ * quartz 调度注解
+ * 只能放在类上，并且该类需要继承QuartzJobBean类 或者实现Job类
+ * 如果同一个作业不需要并发执行 添加@DisallowConcurrentExecution注解
  */
 @Component
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface QuartzScheduled {
+public @interface QuartzScheduledOnClass {
 
 	/**
 	 * 作业名称(唯一)
 	 * @return
 	 */
-	String jobName();
+	String jobName() default "";
 
 	/**
 	 * 作业分组

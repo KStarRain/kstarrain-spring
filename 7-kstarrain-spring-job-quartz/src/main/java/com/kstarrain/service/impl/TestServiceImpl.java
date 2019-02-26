@@ -19,9 +19,9 @@ public class TestServiceImpl implements ITestService {
     }
 
     @Override
-    public void test2(JobDataMap jobDataMap) {
+    public void test2() throws InterruptedException {
         log.info("开始执行作业逻辑task2");
-        System.out.println(JSON.toJSONString(jobDataMap));
+        Thread.sleep(10000L);
         log.info("结束执行作业逻辑task2");
     }
 
