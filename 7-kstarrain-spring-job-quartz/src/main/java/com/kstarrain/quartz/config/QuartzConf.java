@@ -33,7 +33,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * quartz配置类
+ * @author: DongYu
+ * @create: 2019-02-22 12:25
+ * @description: quartz 配置类
  */
 @Component
 @Configuration

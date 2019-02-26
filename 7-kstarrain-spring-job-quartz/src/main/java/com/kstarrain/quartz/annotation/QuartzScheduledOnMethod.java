@@ -6,9 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * quartz 调度注解
- * 只能放在方法上，且该方法不能有参数(因此无法传递初始化参数)
- * 并且要配合@EnableQuartzScheduledOnMethod使用
+ * @author: DongYu
+ * @create: 2019-02-22 12:25
+ * @description: quartz 调度注解
+ * 				 只能放在方法上，且该方法不能有参数(因此无法传递初始化参数)
+ * 				 并且要配合@EnableQuartzScheduledOnMethod使用
  */
 @Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)

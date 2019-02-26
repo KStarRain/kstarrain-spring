@@ -8,9 +8,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * quartz 调度注解
- * 只能放在类上，并且该类需要继承QuartzJobBean类 或者实现Job类
- * 如果同一个作业不需要并发执行 添加@DisallowConcurrentExecution注解
+ * @author: DongYu
+ * @create: 2019-02-22 12:25
+ * @description: quartz 调度注解
+ * 				 只能放在类上，并且该类需要继承QuartzJobBean类 或者实现Job类
+ * 				 如果同一个作业不需要并发执行 添加@DisallowConcurrentExecution注解
  */
 @Component
 @Target({ ElementType.TYPE })

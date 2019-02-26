@@ -8,7 +8,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 启用quartz@QuartzScheduledOnMethod注解
+ * @author: DongYu
+ * @create: 2019-02-22 12:25
+ * @description: 启用@QuartzScheduledOnMethod注解
  */
 @Component
 @Target({ ElementType.TYPE })
