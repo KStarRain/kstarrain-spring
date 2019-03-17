@@ -10,18 +10,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.SerializationException;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.Key;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -29,6 +25,12 @@ import java.util.concurrent.TimeUnit;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:config/application.xml"})
 @Slf4j
+/**
+ *
+ * redis持久化技术：https://www.cnblogs.com/wangfajun/p/5787077.html
+ *                https://www.cnblogs.com/chenliangcl/p/7240350.html
+ *
+ */
 public class RedisTemplateTest extends AbstractJUnit4SpringContextTests {
 
 //    @Autowired

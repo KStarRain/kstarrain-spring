@@ -44,7 +44,7 @@ public class ConcurrentRequest {
 
         ExecutorService executor = Executors.newFixedThreadPool(1000);
         // 测试一万人同时抢购
-        for (int i = 1; i <= 100; i++) {
+        for (int i = 1; i <= 10000; i++) {
             executor.execute(new GoodsControllerRunnable(goodsController,"user" + i, goodsKey, quantity));
         }
         executor.shutdown();
