@@ -20,10 +20,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by GHuang on 16/8/10.
- * Bean and Map convert utils.
- */
+
 public final class BeanConvertUtils {
 
     private static final Log log = LogFactory.getLog(BeanConvertUtils.class);
@@ -172,7 +169,6 @@ public final class BeanConvertUtils {
      * @param <T> bean type
      * @return result map
      */
-    @SuppressWarnings("unchecked")
     public static <T> Map<String, Object> beanToMap(T bean) {
         return BeanMap.create(bean);
     }
