@@ -27,6 +27,14 @@
             <version>2.5.2</version>
         </dependency>
 
+        <!-- 参数校验 -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.2.1.Final</version>
+        </dependency>
+
+
 
         <!-- logback扩展spring 是由官方提供的对Spring的支持 其中主要为一个监听器 -->
         <dependency>

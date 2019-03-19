@@ -3,15 +3,20 @@ package com.kstarrain.controller;
 import com.alibaba.fastjson.JSON;
 import com.kstarrain.service.ITestService;
 import com.kstarrain.vo.TestVO;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,5 +68,27 @@ public class TestController {
         testVO.setInterest(interest);
 
         return testVO;
+    }
+
+
+    @RequestMapping(value = "/test3",method = RequestMethod.POST, produces = "application/json;text/plain;charset=UTF-8")
+    @ResponseBody
+    public TestVO test3(@RequestBody @Valid TestVO testIn, BindingResult bindingResult) {
+
+        log.info("request  : " + JSON.toJSONString(testIn));
+
+        if (bindingResult != null && bindingResult.hasErrors()) {
+            List<FieldError> allErrors = bindingResult.getFieldErrors();
+            if (CollectionUtils.isNotEmpty(allErrors)) {
+
+                List<String> msgs = new ArrayList<String>();
+                for (FieldError err : allErrors) {
+                    msgs.add("[" + err.getField() + "]-" + err.getDefaultMessage());
+                }
+                System.out.println(msgs);
+            }
+        }
+
+        return new TestVO();
     }
 }
