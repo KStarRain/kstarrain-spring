@@ -12,8 +12,8 @@ public interface ErrorCode {
     String getCode();
 
     /**
-     * 业务异常描述
+     * 业务异常信息
      * @return
      */
-    String getDesc();
+    String getMessage();
 }

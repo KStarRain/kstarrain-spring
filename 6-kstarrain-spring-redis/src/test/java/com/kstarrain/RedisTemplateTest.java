@@ -58,6 +58,18 @@ public class RedisTemplateTest extends AbstractJUnit4SpringContextTests {
 
 
     @Test
+    public void testIncrement() {
+        System.out.println("=====================================================================");
+        String KEY = "ip-/test-127.0.0.1";
+
+        //设置key的过期时间
+        stringRedisTemplate.opsForValue().increment(KEY,1);
+
+    }
+
+
+
+    @Test
     public void testString() {
         System.out.println("=====================================================================");
 

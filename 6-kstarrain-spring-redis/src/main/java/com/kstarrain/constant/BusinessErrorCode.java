@@ -15,11 +15,11 @@ public enum BusinessErrorCode implements ErrorCode {
     ;
 
     private String code;
-    private String desc;
+    private String message;
 
-    BusinessErrorCode(String code, String desc) {
+    BusinessErrorCode(String code, String message) {
         this.code = code;
-        this.desc = desc;
+        this.message = message;
     }
 
     @Override
@@ -28,8 +28,8 @@ public enum BusinessErrorCode implements ErrorCode {
     }
 
     @Override
-    public String getDesc() {
-        return desc;
+    public String getMessage() {
+        return message;
     }
 
 }

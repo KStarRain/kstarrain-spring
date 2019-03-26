@@ -1,7 +1,5 @@
 package com.kstarrain.vo;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.kstarrain.request.SimplePageInfo;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -16,17 +14,9 @@ import java.util.List;
 @Data
 public class TestVO {
 
-    @JsonUnwrapped
-    private SimplePageInfo pageInfo;
-
     private String name;
-
     private Integer age;
-
     private BigDecimal money;
-
-    private Date birthday;
-
+    private Date time;
     private List<String> interest;
-
 }
