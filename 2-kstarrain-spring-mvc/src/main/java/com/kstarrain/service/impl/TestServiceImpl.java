@@ -1,9 +1,9 @@
 package com.kstarrain.service.impl;
 
 import com.kstarrain.exception.BusinessException;
-import com.kstarrain.request.TestRequest;
+import com.kstarrain.vo.request.TestRequest;
 import com.kstarrain.service.ITestService;
-import com.kstarrain.vo.TestVO;
+import com.kstarrain.vo.response.TestVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

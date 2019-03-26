@@ -1,4 +1,4 @@
-package com.kstarrain.vo;
+package com.kstarrain.vo.response;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package com.kstarrain.service;
 
-import com.kstarrain.request.TestRequest;
-import com.kstarrain.vo.TestVO;
+import com.kstarrain.vo.request.TestRequest;
+import com.kstarrain.vo.response.TestVO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
