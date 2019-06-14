@@ -6,7 +6,7 @@ import com.kstarrain.exception.BusinessException;
 import com.kstarrain.exception.CommonErrorCode;
 import com.kstarrain.vo.request.TestRequest;
 import com.kstarrain.service.ITestService;
-import com.kstarrain.vo.response.ResultDTO;
+import com.kstarrain.response.ResultDTO;
 import com.kstarrain.vo.response.TestVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

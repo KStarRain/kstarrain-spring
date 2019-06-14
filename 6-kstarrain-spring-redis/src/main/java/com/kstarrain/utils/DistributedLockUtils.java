@@ -1,14 +1,11 @@
 package com.kstarrain.utils;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.RedisOperations;
-import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -16,14 +13,12 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisCommands;
 
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.Collections;
 
 /**
  * @author: DongYu
  * @create: 2019-02-20 18:05
  * @description: 基于redis的分布式锁
- *   参考文档: https://www.jianshu.com/p/8cc44d008177
  */
 @Slf4j
 @Component
