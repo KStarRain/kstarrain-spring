@@ -1,4 +1,4 @@
-package com.kstarrain.autoconfig;
+package com.kstarrain.config;
 
 import com.kstarrain.annotation.MyTransactional;
 import lombok.extern.slf4j.Slf4j;

@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -46,8 +47,7 @@ public class TestController {
      * @param response
      * @return String
      */
-    @RequestMapping(value = "/test1",method = RequestMethod.GET,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
-            ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/test1",consumes = MediaType.APPLICATION_JSON_UTF8_VALUE ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public String test1(HttpServletRequest request) {
         try {

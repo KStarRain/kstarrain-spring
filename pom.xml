@@ -21,7 +21,7 @@
         <module>7-kstarrain-spring-job-task</module>
         <module>7-kstarrain-spring-job-quartz</module>
         <module>7-kstarrain-spring-job-elasticjob</module>
-        <module>8-kstarrain-spring-security</module>
+        <module>8-kstarrain-spring-webclient</module>
     </modules>
 
     <properties>

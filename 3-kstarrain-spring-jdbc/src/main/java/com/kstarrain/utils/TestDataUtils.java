@@ -1,6 +1,8 @@
 package com.kstarrain.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.kstarrain.pojo.Student;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -8,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-
+@Slf4j
 public class TestDataUtils {
 
     public static Student createStudent1(){
@@ -41,6 +43,10 @@ public class TestDataUtils {
         student2.setUpdateDate(new Date());
         student2.setAliveFlag("1");
         return student2;
+    }
+
+    public static void main(String[] args) {
+        log.info(JSON.toJSONString(createStudent1()));
     }
 
 

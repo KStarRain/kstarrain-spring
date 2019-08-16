@@ -1,6 +1,6 @@
-package com.kstarrain.autoconfig;
+package com.kstarrain.config;
 
-import com.kstarrain.autoconfig.properties.RedisProperties;
+import com.kstarrain.config.properties.RedisProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * @description: Spring整合redis配置
  */
 @Configuration
-public class RedisAutoConfig {
+public class RedisConfig {
 
     @Autowired
     private RedisProperties redisProperties;

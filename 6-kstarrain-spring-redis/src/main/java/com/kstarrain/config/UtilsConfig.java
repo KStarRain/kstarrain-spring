@@ -1,4 +1,4 @@
-package com.kstarrain.autoconfig;
+package com.kstarrain.config;
 
 import com.kstarrain.utils.DistributedLockUtils;
 import com.kstarrain.utils.RedisUtils;
@@ -13,10 +13,10 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  */
 
 @Configuration
-public class UtilsAutoConfig {
+public class UtilsConfig {
 
     @Autowired
-    public UtilsAutoConfig(StringRedisTemplate stringRedisTemplate) {
+    public UtilsConfig(StringRedisTemplate stringRedisTemplate) {
 
         RedisUtils.setStringRedisTemplate(stringRedisTemplate);
         DistributedLockUtils.setStringRedisTemplate(stringRedisTemplate);

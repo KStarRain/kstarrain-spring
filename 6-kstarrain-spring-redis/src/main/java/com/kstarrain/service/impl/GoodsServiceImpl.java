@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author: DongYu
@@ -102,7 +103,7 @@ public class GoodsServiceImpl implements IGoodsService {
             String requestId = UUID.randomUUID().toString();
 
             /**分布式锁*/
-            if (DistributedLockUtils.tryLock(key,requestId,5)){
+            if (DistributedLockUtils.tryLock(key,requestId,5L, TimeUnit.SECONDS)){
 
                 try {
                     //从数据库取数据

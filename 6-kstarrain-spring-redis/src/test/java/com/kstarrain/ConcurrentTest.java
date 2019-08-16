@@ -9,9 +9,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import redis.clients.jedis.Jedis;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,10 +30,9 @@ public class ConcurrentTest extends AbstractJUnit4SpringContextTests {
         //是否获取到了锁
         boolean lockable = false;
 
-        Jedis jedis = null;
         try {
 
-            lockable = DistributedLockUtils.tryLock(KEY, requestId, 10000);
+            lockable = DistributedLockUtils.tryLock(KEY, requestId, 10000L, TimeUnit.SECONDS);
 
             if (lockable){
                 System.out.println("获得锁，执行业务逻辑");

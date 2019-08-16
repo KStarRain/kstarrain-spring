@@ -33,8 +33,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class RedisTemplateTest extends AbstractJUnit4SpringContextTests {
 
-//    @Autowired
-//    private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -212,6 +212,9 @@ public class RedisTemplateTest extends AbstractJUnit4SpringContextTests {
 
         Map<Object, Object> entries = stringRedisTemplate.opsForHash().entries(KEY);
         System.out.println(entries);
+
+        Object o = stringRedisTemplate.opsForHash().get(KEY, "2018/01/02");
+        System.out.println(o);
         System.out.println("=====================================================================");
     }
 

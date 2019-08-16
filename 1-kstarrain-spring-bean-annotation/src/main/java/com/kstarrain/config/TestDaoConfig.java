@@ -1,4 +1,4 @@
-package com.kstarrain.autoconfig;
+package com.kstarrain.config;
 
 import com.kstarrain.dao.impl.Test2DaoImpl;
 import org.springframework.beans.BeansException;
