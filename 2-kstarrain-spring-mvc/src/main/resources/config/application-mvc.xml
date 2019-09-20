@@ -28,7 +28,6 @@
 
 
 
-
   <!-- 视图解析器   如果不需要返回页面也可以不配置视图解析器-->
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     <!-- 前缀 -->
@@ -36,7 +35,6 @@
     <!-- 后缀 -->
     <property name="suffix" value=".jsp"></property>
   </bean>
-
 
 
 </beans>

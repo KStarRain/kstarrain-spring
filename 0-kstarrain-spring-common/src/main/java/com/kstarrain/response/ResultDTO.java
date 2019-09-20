@@ -21,4 +21,11 @@ public class ResultDTO<T> implements Serializable {
     public ResultDTO(T data) {
         this.data = data;
     }
+
+
+    public ResultDTO(Boolean success, String message, T data) {
+        this.success = success;
+        this.message = message;
+        this.data = data;
+    }
 }

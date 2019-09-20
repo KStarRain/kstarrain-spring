@@ -5,9 +5,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.listener.PatternTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -83,14 +86,14 @@ public class RedisConfig {
         RedisTemplate redisTemplate = new RedisTemplate();
         //redis连接工厂
         redisTemplate.setConnectionFactory(jedisConnectionFactory);
-        //设置key 采用String序列化策略
+       /* //设置key 采用String序列化策略
         redisTemplate.setKeySerializer(stringRedisSerializer);
         //设置value 采用String序列化策略
         redisTemplate.setValueSerializer(stringRedisSerializer);
         //设置在hash数据结构中，hash-key 采用String序列化策略
         redisTemplate.setHashKeySerializer(stringRedisSerializer);
         //设置在hash数据结构中，hash-value 采用String序列化策略
-        redisTemplate.setHashValueSerializer(stringRedisSerializer);
+        redisTemplate.setHashValueSerializer(stringRedisSerializer);*/
         return redisTemplate;
     }
 
@@ -105,6 +108,16 @@ public class RedisConfig {
         return stringRedisTemplate;
     }
 
+
+
+    @Bean
+    RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory) {
+
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+//        container.addMessageListener(new RedisExpiredListener(), new PatternTopic("__keyevent@0__:expired"));
+        return container;
+    }
 
 
 

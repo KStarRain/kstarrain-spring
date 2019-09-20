@@ -529,4 +529,26 @@ public class RedisTemplateTest extends AbstractJUnit4SpringContextTests {
     }
 
 
+
+    @Test
+    public void testListener() {
+        System.out.println("=====================================================================");
+        String KEY_PREFIX = "LISTENER_";
+
+
+
+        String KEY_01 = KEY_PREFIX + "01";
+        String KEY_02 = KEY_PREFIX + "02";
+        String KEY_other = "TEST_006312";
+
+
+        System.out.println("------------------------------");
+
+        stringRedisTemplate.opsForValue().set(KEY_01,"貂蝉",5, TimeUnit.SECONDS);
+        stringRedisTemplate.opsForValue().set(KEY_02,"吕布",5, TimeUnit.SECONDS);
+        stringRedisTemplate.opsForValue().set(KEY_other,"flag",5, TimeUnit.SECONDS);
+
+        System.out.println("=====================================================================");
+
+    }
 }

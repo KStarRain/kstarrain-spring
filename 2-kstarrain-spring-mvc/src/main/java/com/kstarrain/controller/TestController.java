@@ -1,31 +1,31 @@
 package com.kstarrain.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.kstarrain.exception.BusinessException;
 import com.kstarrain.exception.CommonErrorCode;
-import com.kstarrain.vo.request.TestRequest;
-import com.kstarrain.service.ITestService;
+import com.kstarrain.exception.ErrorCode;
 import com.kstarrain.response.ResultDTO;
-import com.kstarrain.vo.response.TestVO;
+import com.kstarrain.vo.request.LoginRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.List;
 
 /**
  * @RequestMapping注解中
- *    consumes属性：request的headers中Content-Type必须匹配，否则无法执行
+ *    consumes属性：request的headers中Content-Type必须匹配，否则无法进入controller
  *    produces属性：response的headers中Content-Type的值
  * @ResponseBody  的具体作用：
  *      其将方法的返回值通过适当的转换器转换为指定的格式之后，写入到 response 对象的 body 区，通常用来给客户端返回 JSON 数据或者是 XML 数据，
@@ -38,81 +38,46 @@ import java.util.Map;
 @Slf4j
 public class TestController {
 
-    @Autowired
-    private ITestService testService;
+
+    private String directoryPath = "E:" + File.separator + "test" + File.separator + "file";
+
+    private String readFilePath = "E:" + File.separator + "其他" + File.separator + "cat.jpg";
 
 
-    /**
-     * @param request
-     * @param response
-     * @return String
-     */
-    @GetMapping(value = "/test1",consumes = MediaType.APPLICATION_JSON_UTF8_VALUE ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/http/get"
+//            ,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+//            ,produces = "text/plain;charset=UTF-8"
+            ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
     @ResponseBody
-    public String test1(HttpServletRequest request) {
-        try {
-            Map data = testService.test1(request);
-
-            JSONObject resultDTO = new JSONObject();
-            resultDTO.put("data",data);
-            resultDTO.put("message","/test1[GET] json 请求成功");
-            return resultDTO.toString();
-        } catch (BusinessException e) {
-            return e.toJSON().toString();
-        } catch (Exception e) {
-            return CommonErrorCode.SYSTEM_ERROR.toJSON().toString();
-        }
-    }
-
-
-    /**
-     * @param request
-     * @param response
-     * @param testRequest
-     * @return ResultDTO<TestVO>
-     */
-    @RequestMapping(value = "/test2",method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
-    public ResultDTO<TestVO> test2(HttpServletRequest request,@RequestBody TestRequest testRequest) {
-
-        ResultDTO<TestVO> result = new ResultDTO<>();
-        try {
-            TestVO data = testService.test2(testRequest);
-            result.setData(data);
-            result.setMessage("/test2[POST] json 请求成功");
-        } catch (BusinessException e) {
-            result.setSuccess(false);
-            result.setCode(e.getCode());
-            result.setMessage(e.getMessage());
-        } catch (Exception e) {
-            result.setSuccess(false);
-            result.setCode(CommonErrorCode.SYSTEM_ERROR.getCode());
-            result.setMessage(CommonErrorCode.SYSTEM_ERROR.getMessage());
-        }
-        return result;
-    }
-
-
-    /**
-     * @param request
-     * @param testRequest
-     * @return ResponseEntity<JSON>
-     */
-    @RequestMapping(value = "/test3",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    @ResponseBody
-    public ResponseEntity<JSON> test3(HttpServletRequest request, @RequestBody TestRequest testRequest
-            , @CookieValue(value = "userId",required = false) String userId) {
+    public ResponseEntity<JSON> get(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    @RequestParam(value = "userName",required = false) String userName,
+                                    @RequestParam(value = "password",required = false) String password,
+                                    @CookieValue(value = "testMethod",required = false) String testMethod,
+                                    @CookieValue(value = "accessToken",required = false) String accessToken,
+                                    @CookieValue(value = "company",required = false) String company) {
 
         try {
-            TestVO data = testService.test2(testRequest);
 
-            JSONObject resultDTO = new JSONObject();
-            resultDTO.put("data",data);
-            resultDTO.put("cookie","userId="+userId);
-            resultDTO.put("pageNum",testRequest.getPageInfo().getPageNum());
-            resultDTO.put("pageSize",testRequest.getPageInfo().getPageSize());
-            resultDTO.put("message","/test3[POST] json 请求成功");
-            return ResponseEntity.ok().body(resultDTO);
+            System.out.println("Content-Type        : " + request.getHeader(HttpHeaders.CONTENT_TYPE));
+            System.out.println("Accept              : " + request.getHeader(HttpHeaders.ACCEPT));
+            System.out.println("Authorization       : " + request.getHeader(HttpHeaders.AUTHORIZATION));
+
+            System.out.println("Cookie              : testMethod=" + testMethod);
+            System.out.println("Cookie              : accessToken=" + accessToken);
+            System.out.println("Cookie              : company=" + company);
+
+            System.out.println("userName            : " + userName);
+            System.out.println("password            : " + password);
+
+
+
+            ResultDTO resultDTO = new ResultDTO<>(true,"请求成功",Lists.newArrayList());
+
+            throw new BusinessException(CommonErrorCode.SYSTEM_ERROR);
+
+//            return ResponseEntity.ok().body((JSON)JSON.toJSON(resultDTO));
         } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(e.toJSON());
         } catch (Exception e) {
@@ -122,28 +87,212 @@ public class TestController {
     }
 
 
-    /**
-     * @param request
-     * @param testRequest
-     * @param bindingResult
-     * @return ResponseEntity<JSON>
-     */
-    @RequestMapping(value = "/test4",method = RequestMethod.POST, produces = "application/json;text/plain;charset=UTF-8")
+    @PostMapping(value = "/http/postEmpty")
     @ResponseBody
-    public ResponseEntity<JSON> test4(HttpServletRequest request,@RequestBody @Valid TestRequest testRequest, BindingResult bindingResult) {
+    public ResponseEntity<JSON> postEmpty(HttpServletRequest request,
+                                         HttpServletResponse response,
+                                          @RequestParam(value = "time",required = false) Long time,
+                                          @CookieValue(value = "testMethod",required = false) String testMethod,
+                                          @CookieValue(value = "accessToken",required = false) String accessToken,
+                                          @CookieValue(value = "company",required = false) String company) {
 
         try {
-            if (bindingResult != null && bindingResult.hasErrors()) {
-                throw new BusinessException("param error",bindingResult.getFieldErrors().get(0).getDefaultMessage());
+
+            System.out.println("Content-Type        : " + request.getHeader(HttpHeaders.CONTENT_TYPE));
+            System.out.println("Accept              : " + request.getHeader(HttpHeaders.ACCEPT));
+            System.out.println("Authorization       : " + request.getHeader(HttpHeaders.AUTHORIZATION));
+
+            System.out.println("Cookie              : testMethod=" + testMethod);
+            System.out.println("Cookie              : accessToken=" + accessToken);
+            System.out.println("Cookie              : company=" + company);
+
+            System.out.println("time                : " + time);
+
+            ResultDTO resultDTO = new ResultDTO<>(true,"请求成功",Lists.newArrayList());
+
+            return ResponseEntity.ok().body((JSON)JSON.toJSON(resultDTO));
+        } catch (BusinessException e) {
+            return ResponseEntity.badRequest().body(e.toJSON());
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            return ResponseEntity.badRequest().body(CommonErrorCode.SYSTEM_ERROR.toJSON());
+        }
+    }
+
+
+    @PostMapping(value = "/http/postJson" ,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity<JSON> postJson(HttpServletRequest request,
+                                         HttpServletResponse response,
+                                         @RequestParam(value = "time",required = false) Long time,
+                                         @CookieValue(value = "testMethod",required = false) String testMethod,
+                                         @CookieValue(value = "accessToken",required = false) String accessToken,
+                                         @CookieValue(value = "company",required = false) String company,
+                                         @RequestBody LoginRequest loginRequest) {
+
+        try {
+
+            System.out.println("Content-Type        : " + request.getHeader(HttpHeaders.CONTENT_TYPE));
+            System.out.println("Accept              : " + request.getHeader(HttpHeaders.ACCEPT));
+            System.out.println("Authorization       : " + request.getHeader(HttpHeaders.AUTHORIZATION));
+
+            System.out.println("Cookie              : testMethod=" + testMethod);
+            System.out.println("Cookie              : accessToken=" + accessToken);
+            System.out.println("Cookie              : company=" + company);
+
+            System.out.println("time                : " + time);
+
+            System.out.println("userName            : " + loginRequest.getUserName());
+            System.out.println("password            : " + loginRequest.getPassword());
+
+
+            ResultDTO resultDTO = new ResultDTO<>(true,"请求成功",Lists.newArrayList());
+
+            return ResponseEntity.ok().body((JSON)JSON.toJSON(resultDTO));
+        } catch (BusinessException e) {
+            return ResponseEntity.badRequest().body(e.toJSON());
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            return ResponseEntity.badRequest().body(CommonErrorCode.SYSTEM_ERROR.toJSON());
+        }
+    }
+
+
+    @PostMapping(value = "/http/postForm1")
+    @ResponseBody
+    public ResponseEntity<JSON> postForm1(HttpServletRequest request,
+                                          HttpServletResponse response,
+                                          @CookieValue(value = "testMethod",required = false) String testMethod,
+                                          @CookieValue(value = "accessToken",required = false) String accessToken,
+                                          @CookieValue(value = "company",required = false) String company,
+                                          @RequestParam(value = "userName") String userName,
+                                          @RequestParam(value = "password") String password,
+                                          @RequestParam(value = "date",required = false) String date,
+                                          @RequestParam(value = "tags") List<String> tags) {
+
+        try {
+
+            System.out.println("Content-Type        : " + request.getHeader(HttpHeaders.CONTENT_TYPE));
+            System.out.println("Accept              : " + request.getHeader(HttpHeaders.ACCEPT));
+            System.out.println("Authorization       : " + request.getHeader(HttpHeaders.AUTHORIZATION));
+
+            System.out.println("Cookie              : testMethod=" + testMethod);
+            System.out.println("Cookie              : accessToken=" + accessToken);
+            System.out.println("Cookie              : company=" + company);
+
+
+            System.out.println("userName            : " + userName);
+            System.out.println("password            : " + password);
+            System.out.println("date[非必传]         : " + date);
+            System.out.println("tags                : " + tags);
+
+
+            ResultDTO resultDTO = new ResultDTO<>(true,"请求成功",Lists.newArrayList());
+
+            return ResponseEntity.ok().body((JSON)JSON.toJSON(resultDTO));
+        } catch (BusinessException e) {
+            return ResponseEntity.badRequest().body(e.toJSON());
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            return ResponseEntity.badRequest().body(CommonErrorCode.SYSTEM_ERROR.toJSON());
+        }
+    }
+
+
+
+
+    @PostMapping(value = "/http/postForm2")
+    @ResponseBody
+    public ResponseEntity<JSON> postForm2(HttpServletRequest request,
+                                          HttpServletResponse response,
+                                          @CookieValue(value = "testMethod",required = false) String testMethod,
+                                          @CookieValue(value = "accessToken",required = false) String accessToken,
+                                          @CookieValue(value = "company",required = false) String company,
+                                          LoginRequest loginRequest ) {
+
+        try {
+
+            System.out.println("Content-Type        : " + request.getHeader(HttpHeaders.CONTENT_TYPE));
+            System.out.println("Accept              : " + request.getHeader(HttpHeaders.ACCEPT));
+            System.out.println("Authorization       : " + request.getHeader(HttpHeaders.AUTHORIZATION));
+
+            System.out.println("Cookie              : testMethod=" + testMethod);
+            System.out.println("Cookie              : accessToken=" + accessToken);
+            System.out.println("Cookie              : company=" + company);
+
+            System.out.println("userName            : " + loginRequest.getUserName());
+            System.out.println("password            : " + loginRequest.getPassword());
+            System.out.println("date[非必传]         : " + loginRequest.getDate());
+            System.out.println("tags                : " + loginRequest.getTags());
+
+
+            ResultDTO resultDTO = new ResultDTO<>(true,"请求成功",Lists.newArrayList());
+
+            return ResponseEntity.ok().body((JSON)JSON.toJSON(resultDTO));
+        } catch (BusinessException e) {
+            return ResponseEntity.badRequest().body(e.toJSON());
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+            return ResponseEntity.badRequest().body(CommonErrorCode.SYSTEM_ERROR.toJSON());
+        }
+    }
+
+
+
+    @PostMapping(value = "/http/postMultipart")
+    @ResponseBody
+    public ResponseEntity<JSON> postMultipart(HttpServletRequest request,
+                                              HttpServletResponse response,
+                                              @CookieValue(value = "testMethod",required = false) String testMethod,
+                                              @CookieValue(value = "accessToken",required = false) String accessToken,
+                                              @CookieValue(value = "company",required = false) String company,
+                                              @RequestParam(value = "userName",required = false) String userName,
+                                              @RequestParam(value = "password",required = false) String password,
+                                              @RequestParam(value = "date",required = false) String date,
+                                              @RequestParam(value = "tags",required = false) List<String> tags,
+                                              @RequestParam(value = "file") MultipartFile multipartFile) {
+
+        try {
+
+            System.out.println("Content-Type        : " + request.getHeader(HttpHeaders.CONTENT_TYPE));
+            System.out.println("Accept              : " + request.getHeader(HttpHeaders.ACCEPT));
+            System.out.println("Authorization       : " + request.getHeader(HttpHeaders.AUTHORIZATION));
+
+            System.out.println("Cookie              : testMethod=" + testMethod);
+            System.out.println("Cookie              : accessToken=" + accessToken);
+            System.out.println("Cookie              : company=" + company);
+
+
+            System.out.println("userName            : " + userName);
+            System.out.println("password            : " + password);
+            System.out.println("date[非必传]         : " + date);
+            System.out.println("tags                : " + tags);
+
+
+            response.setHeader("Accept-Ranges","bytes");
+            response.setHeader("Cache-Control","no-store");
+
+            String fileName = multipartFile.getOriginalFilename();
+
+            String contentType = "";
+            if (fileName.endsWith(".png")) {
+                contentType = MediaType.IMAGE_PNG_VALUE;
+            }else if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".jpe")) {
+                contentType = MediaType.IMAGE_JPEG_VALUE;
+            }else if (fileName.endsWith(".gif")) {
+                contentType = MediaType.IMAGE_GIF_VALUE;
             }
-            TestVO data = testService.test2(testRequest);
 
-            JSONObject resultDTO = new JSONObject();
-            resultDTO.put("data",data);
-            resultDTO.put("pageNum",testRequest.getPageInfo().getPageNum());
-            resultDTO.put("pageSize",testRequest.getPageInfo().getPageSize());
-            resultDTO.put("message","/test4[POST] @Valid json 请求成功");
-            return ResponseEntity.ok().body(resultDTO);
+            response.setContentType(contentType);
+
+            /**将传入的文件复制输出到本地上*/
+            FileUtils.forceMkdir(new File(directoryPath));
+            String writeFilePath = directoryPath + File.separator + multipartFile.getOriginalFilename();
+            FileUtils.copyInputStreamToFile(multipartFile.getInputStream(),new File(writeFilePath));
+
+            ResultDTO resultDTO = new ResultDTO<>(true,"请求成功",Lists.newArrayList());
+
+            return ResponseEntity.ok().body((JSON)JSON.toJSON(resultDTO));
         } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(e.toJSON());
         } catch (Exception e) {
@@ -153,26 +302,21 @@ public class TestController {
     }
 
 
-    /**
-     * 表单 单个参数接收
-     * @param name
-     * @return
-     */
-    @RequestMapping(value = "/test5",method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<JSON> test5(@RequestParam("name")String name,@RequestParam("age")String age) {
+    @GetMapping(value = "/http/logo")
+    public ResponseEntity<JSON> getLogo(HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            if (StringUtils.isBlank(name)||!NumberUtils.isCreatable(age)){
-                throw new BusinessException("param error","传参错误");
-            }
-            JSONObject resultDTO = new JSONObject();
-            JSONObject data = new JSONObject();
-            data.put("name",name);
-            data.put("age",age);
-            resultDTO.put("data",data);
-            resultDTO.put("message","/test5[POST] form 请求成功");
-            return ResponseEntity.ok().body(resultDTO);
+
+            byte[] bytes = FileUtils.readFileToByteArray(new File(readFilePath));
+
+            //ByteArrayInputStream 是内存读写流，不同于指向硬盘的流,不需要手动关闭
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+
+
+            IOUtils.copy(inputStream,response.getOutputStream());
+            response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+
+            return ResponseEntity.ok().build();
         } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(e.toJSON());
         } catch (Exception e) {
@@ -182,31 +326,4 @@ public class TestController {
     }
 
 
-    /**
-     * 表单 实体类接收
-     * @param name
-     * @return
-     */
-    @RequestMapping(value = "/test6",method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<JSON> test6(TestRequest testRequest) {
-
-        try {
-            if (StringUtils.isBlank(testRequest.getName()) || testRequest.getAge() == null || testRequest.getAge() < 1){
-                throw new BusinessException("param error","传参错误");
-            }
-            JSONObject resultDTO = new JSONObject();
-            JSONObject data = new JSONObject();
-            data.put("name",testRequest.getName());
-            data.put("age",testRequest.getAge());
-            resultDTO.put("data",data);
-            resultDTO.put("message","/test6[POST] form 请求成功");
-            return ResponseEntity.ok().body(resultDTO);
-        } catch (BusinessException e) {
-            return ResponseEntity.badRequest().body(e.toJSON());
-        } catch (Exception e) {
-            log.error(e.getMessage(),e);
-            return ResponseEntity.badRequest().body(CommonErrorCode.SYSTEM_ERROR.toJSON());
-        }
-    }
 }

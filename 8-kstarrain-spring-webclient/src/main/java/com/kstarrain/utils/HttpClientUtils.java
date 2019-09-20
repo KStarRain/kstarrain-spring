@@ -1,10 +1,12 @@
 package com.kstarrain.utils;
 
 import org.springframework.http.*;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -17,10 +19,6 @@ import java.util.Map;
  * @author: Dong Yu
  * @create: 2019-08-14 08:59
  * @description: 基于spring下RestTemplate的Http调用工具类
- *               post请求时，如果 Content-Type 为 application/x-www-form-urlencoded 或 multipart/form-data 传参请使用 LinkedMultiValueMap
- *                                              application/json 使用hashmap 即可
- *
- *
  */
 public class HttpClientUtils {
 
@@ -32,23 +30,22 @@ public class HttpClientUtils {
      */
     static {
 
-        restTemplate = new RestTemplate();
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(3000); //建立连接的超时时间(未建立连接会报错 connect timed out)
+        requestFactory.setReadTimeout(20000);   //已经建立连接，并开始读取服务端资源的超时时间(服务端处理业务太慢超时会报错 Read timed out)
 
+
+        restTemplate = new RestTemplate(requestFactory);
         Iterator<HttpMessageConverter<?>> iterator = restTemplate.getMessageConverters().iterator();
-
-        // 删除所有的 StringHttpMessageConverter（ISO-8859-1）
         while (iterator.hasNext()) {
             final HttpMessageConverter<?> converter = iterator.next();
             if (converter instanceof StringHttpMessageConverter) {
-                iterator.remove();
+                iterator.remove(); // 删除 StringHttpMessageConverter（ISO-8859-1）
             }
         }
-        // 添加 UTF-8 的解析器
-        restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
-
+        restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8)); // 添加 StringHttpMessageConverter（UTF-8）
     }
 
-    // ----------------------------------GET-------------------------------------------------------
 
     /**
      * GET请求调用方式
@@ -58,92 +55,22 @@ public class HttpClientUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public static <T> ResponseEntity<T> sendGet(String url, Class<T> responseType) {
-        return restTemplate.getForEntity(url, responseType);
+        return send(url, HttpMethod.GET, HttpEntity.EMPTY, responseType);
     }
+
 
     /**
      * GET请求调用方式
      *
      * @param url 请求URL
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendGet(String url, Class<T> responseType, Object... uriVariables) {
-        return restTemplate.getForEntity(url, responseType, uriVariables);
-    }
-
-    /**
-     * GET请求调用方式
-     *
-     * @param url 请求URL
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendGet(String url, Class<T> responseType, Map<String, ?> uriVariables) {
-        return restTemplate.getForEntity(url, responseType, uriVariables);
-    }
-
-    /**
-     * 带请求头的GET请求调用方式
-     *
-     * @param url 请求URL
      * @param headers 请求头参数
      * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
      * @return ResponseEntity 响应对象封装类
      */
-    public static <T> ResponseEntity<T> sendGet(String url, Map<String, String> headers, Class<T> responseType, Object... uriVariables) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAll(headers);
-        return sendGet(url, httpHeaders, responseType, uriVariables);
+    public static <T> ResponseEntity<T> sendGet(String url, HttpHeaders headers, Class<T> responseType) {
+        return send(url, HttpMethod.GET, new HttpEntity<>(headers), responseType);
     }
 
-    /**
-     * 带请求头的GET请求调用方式
-     *
-     * @param url 请求URL
-     * @param headers 请求头参数
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendGet(String url, HttpHeaders headers, Class<T> responseType, Object... uriVariables) {
-        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-        return send(url, HttpMethod.GET, requestEntity, responseType, uriVariables);
-    }
-
-    /**
-     * 带请求头的GET请求调用方式
-     *
-     * @param url 请求URL
-     * @param headers 请求头参数
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendGet(String url, Map<String, String> headers, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAll(headers);
-        return sendGet(url, httpHeaders, responseType, uriVariables);
-    }
-
-    /**
-     * 带请求头的GET请求调用方式
-     *
-     * @param url 请求URL
-     * @param headers 请求头参数
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendGet(String url, HttpHeaders headers, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-        return send(url, HttpMethod.GET, requestEntity, responseType, uriVariables);
-    }
-
-    // ----------------------------------POST-------------------------------------------------------
 
     /**
      * POST请求调用方式
@@ -153,8 +80,22 @@ public class HttpClientUtils {
      * @return
      */
     public static <T> ResponseEntity<T> sendPost(String url, Class<T> responseType) {
-        return restTemplate.postForEntity(url, HttpEntity.EMPTY, responseType);
+        return send(url, HttpMethod.POST, HttpEntity.EMPTY, responseType);
     }
+
+
+    /**
+     * POST请求调用方式
+     *
+     * @param url 请求URL
+     * @param headers 请求头参数
+     * @param responseType 返回对象类型
+     * @return ResponseEntity 响应对象封装类
+     */
+    public static <T> ResponseEntity<T> sendPost(String url, HttpHeaders headers, Class<T> responseType) {
+        return send(url, HttpMethod.POST, new HttpEntity<>(headers), responseType);
+    }
+
 
     /**
      * POST请求调用方式
@@ -165,136 +106,48 @@ public class HttpClientUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public static <T> ResponseEntity<T> sendPost(String url, Object requestBody, Class<T> responseType) {
-        return restTemplate.postForEntity(url, requestBody, responseType);
+        return send(url, HttpMethod.POST, new HttpEntity<>(requestBody), responseType);
     }
+
 
     /**
      * POST请求调用方式
      *
      * @param url 请求URL
-     * @param requestBody 请求参数体
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendPost(String url, Object requestBody, Class<T> responseType, Object... uriVariables) {
-        return restTemplate.postForEntity(url, requestBody, responseType, uriVariables);
-    }
-
-    /**
-     * POST请求调用方式
-     *
-     * @param url 请求URL
-     * @param requestBody 请求参数体
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendPost(String url, Object requestBody, Class<T> responseType, Map<String, ?> uriVariables) {
-        return restTemplate.postForEntity(url, requestBody, responseType, uriVariables);
-    }
-
-    /**
-     * 带请求头的POST请求调用方式
-     *
-     * @param url 请求URL
      * @param headers 请求头参数
      * @param requestBody 请求参数体
      * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
      * @return ResponseEntity 响应对象封装类
      */
-    public static <T> ResponseEntity<T> sendPost(String url, Map<String, String> headers, Object requestBody, Class<T> responseType, Object... uriVariables) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAll(headers);
-        return sendPost(url, httpHeaders, requestBody, responseType, uriVariables);
+    public static <T> ResponseEntity<T> sendPost(String url, HttpHeaders headers, Object requestBody, Class<T> responseType) {
+        return send(url, HttpMethod.POST, new HttpEntity<>(requestBody, headers), responseType);
     }
 
-    /**
-     * 带请求头的POST请求调用方式
-     *
-     * @param url 请求URL
-     * @param headers 请求头参数
-     * @param requestBody 请求参数体
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendPost(String url, HttpHeaders headers, Object requestBody, Class<T> responseType, Object... uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody, headers);
-        return sendPost(url, requestEntity, responseType, uriVariables);
-    }
-
-    /**
-     * 带请求头的POST请求调用方式
-     *
-     * @param url 请求URL
-     * @param headers 请求头参数
-     * @param requestBody 请求参数体
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendPost(String url, Map<String, String> headers, Object requestBody, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAll(headers);
-        return sendPost(url, httpHeaders, requestBody, responseType, uriVariables);
-    }
-
-    /**
-     * 带请求头的POST请求调用方式
-     *
-     * @param url 请求URL
-     * @param headers 请求头参数
-     * @param requestBody 请求参数体
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendPost(String url, HttpHeaders headers, Object requestBody, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody, headers);
-        return sendPost(url, requestEntity, responseType, uriVariables);
-    }
-
-    /**
-     * 自定义请求头和请求体的POST请求调用方式
-     *
-     * @param url 请求URL
-     * @param requestEntity 请求头和请求体封装对象
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendPost(String url, HttpEntity<?> requestEntity, Class<T> responseType, Object... uriVariables) {
-        return restTemplate.exchange(url, HttpMethod.POST, requestEntity, responseType, uriVariables);
-    }
-
-    /**
-     * 自定义请求头和请求体的POST请求调用方式
-     *
-     * @param url 请求URL
-     * @param requestEntity 请求头和请求体封装对象
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendPost(String url, HttpEntity<?> requestEntity, Class<T> responseType, Map<String, ?> uriVariables) {
-        return restTemplate.exchange(url, HttpMethod.POST, requestEntity, responseType, uriVariables);
-    }
-
-    // ----------------------------------PUT-------------------------------------------------------
 
     /**
      * PUT请求调用方式
      *
      * @param url 请求URL
      * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
      * @return ResponseEntity 响应对象封装类
      */
-    public static <T> ResponseEntity<T> sendPut(String url, Class<T> responseType, Object... uriVariables) {
-        return sendPut(url, HttpEntity.EMPTY, responseType, uriVariables);
+    public static <T> ResponseEntity<T> sendPut(String url, Class<T> responseType) {
+        return send(url, HttpMethod.PUT, HttpEntity.EMPTY, responseType);
     }
+
+
+    /**
+     * PUT请求调用方式
+     *
+     * @param url 请求URL
+     * @param headers 请求头参数
+     * @param responseType 返回对象类型
+     * @return ResponseEntity 响应对象封装类
+     */
+    public static <T> ResponseEntity<T> sendPut(String url, HttpHeaders headers, Class<T> responseType) {
+        return send(url, HttpMethod.PUT, new HttpEntity<>(headers), responseType);
+    }
+
 
     /**
      * PUT请求调用方式
@@ -302,141 +155,51 @@ public class HttpClientUtils {
      * @param url 请求URL
      * @param requestBody 请求参数体
      * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
      * @return ResponseEntity 响应对象封装类
      */
-    public static <T> ResponseEntity<T> sendPut(String url, Object requestBody, Class<T> responseType, Object... uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody);
-        return sendPut(url, requestEntity, responseType, uriVariables);
+    public static <T> ResponseEntity<T> sendPut(String url, Object requestBody, Class<T> responseType) {
+        return send(url, HttpMethod.PUT, new HttpEntity<>(requestBody), responseType);
     }
+
 
     /**
      * PUT请求调用方式
      *
      * @param url 请求URL
-     * @param requestBody 请求参数体
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendPut(String url, Object requestBody, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody);
-        return sendPut(url, requestEntity, responseType, uriVariables);
-    }
-
-    /**
-     * 带请求头的PUT请求调用方式
-     *
-     * @param url 请求URL
      * @param headers 请求头参数
      * @param requestBody 请求参数体
      * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
      * @return ResponseEntity 响应对象封装类
      */
-    public static <T> ResponseEntity<T> sendPut(String url, Map<String, String> headers, Object requestBody, Class<T> responseType, Object... uriVariables) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAll(headers);
-        return sendPut(url, httpHeaders, requestBody, responseType, uriVariables);
+    public static <T> ResponseEntity<T> sendPut(String url, HttpHeaders headers, Object requestBody, Class<T> responseType) {
+        return send(url, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), responseType);
     }
 
-    /**
-     * 带请求头的PUT请求调用方式
-     *
-     * @param url 请求URL
-     * @param headers 请求头参数
-     * @param requestBody 请求参数体
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendPut(String url, HttpHeaders headers, Object requestBody, Class<T> responseType, Object... uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody, headers);
-        return sendPut(url, requestEntity, responseType, uriVariables);
-    }
-
-    /**
-     * 带请求头的PUT请求调用方式
-     *
-     * @param url 请求URL
-     * @param headers 请求头参数
-     * @param requestBody 请求参数体
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendPut(String url, Map<String, String> headers, Object requestBody, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAll(headers);
-        return sendPut(url, httpHeaders, requestBody, responseType, uriVariables);
-    }
-
-    /**
-     * 带请求头的PUT请求调用方式
-     *
-     * @param url 请求URL
-     * @param headers 请求头参数
-     * @param requestBody 请求参数体
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendPut(String url, HttpHeaders headers, Object requestBody, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody, headers);
-        return sendPut(url, requestEntity, responseType, uriVariables);
-    }
-
-    /**
-     * 自定义请求头和请求体的PUT请求调用方式
-     *
-     * @param url 请求URL
-     * @param requestEntity 请求头和请求体封装对象
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendPut(String url, HttpEntity<?> requestEntity, Class<T> responseType, Object... uriVariables) {
-        return restTemplate.exchange(url, HttpMethod.PUT, requestEntity, responseType, uriVariables);
-    }
-
-    /**
-     * 自定义请求头和请求体的PUT请求调用方式
-     *
-     * @param url 请求URL
-     * @param requestEntity 请求头和请求体封装对象
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendPut(String url, HttpEntity<?> requestEntity, Class<T> responseType, Map<String, ?> uriVariables) {
-        return restTemplate.exchange(url, HttpMethod.PUT, requestEntity, responseType, uriVariables);
-    }
-
-    // ----------------------------------DELETE-------------------------------------------------------
 
     /**
      * DELETE请求调用方式
      *
      * @param url 请求URL
      * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
      * @return ResponseEntity 响应对象封装类
      */
-    public static <T> ResponseEntity<T> sendDelete(String url, Class<T> responseType, Object... uriVariables) {
-        return sendDelete(url, HttpEntity.EMPTY, responseType, uriVariables);
+    public static <T> ResponseEntity<T> sendDelete(String url, Class<T> responseType) {
+        return send(url, HttpMethod.DELETE, HttpEntity.EMPTY, responseType);
     }
+
 
     /**
      * DELETE请求调用方式
      *
      * @param url 请求URL
+     * @param headers 请求头参数
      * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
      * @return ResponseEntity 响应对象封装类
      */
-    public static <T> ResponseEntity<T> sendDelete(String url, Class<T> responseType, Map<String, ?> uriVariables) {
-        return sendDelete(url, HttpEntity.EMPTY, responseType, uriVariables);
+    public static <T> ResponseEntity<T> sendDelete(String url, HttpHeaders headers, Class<T> responseType) {
+        return send(url, HttpMethod.DELETE, new HttpEntity<>(headers), responseType);
     }
+
 
     /**
      * DELETE请求调用方式
@@ -444,173 +207,26 @@ public class HttpClientUtils {
      * @param url 请求URL
      * @param requestBody 请求参数体
      * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
      * @return ResponseEntity 响应对象封装类
      */
-    public static <T> ResponseEntity<T> sendDelete(String url, Object requestBody, Class<T> responseType, Object... uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody);
-        return sendDelete(url, requestEntity, responseType, uriVariables);
+    public static <T> ResponseEntity<T> sendDelete(String url, Object requestBody, Class<T> responseType) {
+        return send(url, HttpMethod.DELETE, new HttpEntity<>(requestBody), responseType);
     }
+
 
     /**
      * DELETE请求调用方式
      *
      * @param url 请求URL
-     * @param requestBody 请求参数体
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendDelete(String url, Object requestBody, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody);
-        return sendDelete(url, requestEntity, responseType, uriVariables);
-    }
-
-    /**
-     * 带请求头的DELETE请求调用方式
-     *
-     * @param url 请求URL
-     * @param headers 请求头参数
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendDelete(String url, Map<String, String> headers, Class<T> responseType, Object... uriVariables) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAll(headers);
-        return sendDelete(url, httpHeaders, responseType, uriVariables);
-    }
-
-    /**
-     * 带请求头的DELETE请求调用方式
-     *
-     * @param url 请求URL
-     * @param headers 请求头参数
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendDelete(String url, HttpHeaders headers, Class<T> responseType, Object... uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(headers);
-        return sendDelete(url, requestEntity, responseType, uriVariables);
-    }
-
-    /**
-     * 带请求头的DELETE请求调用方式
-     *
-     * @param url 请求URL
-     * @param headers 请求头参数
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendDelete(String url, Map<String, String> headers, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAll(headers);
-        return sendDelete(url, httpHeaders, responseType, uriVariables);
-    }
-
-    /**
-     * 带请求头的DELETE请求调用方式
-     *
-     * @param url 请求URL
-     * @param headers 请求头参数
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendDelete(String url, HttpHeaders headers, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(headers);
-        return sendDelete(url, requestEntity, responseType, uriVariables);
-    }
-
-    /**
-     * 带请求头的DELETE请求调用方式
-     *
-     * @param url 请求URL
      * @param headers 请求头参数
      * @param requestBody 请求参数体
      * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
      * @return ResponseEntity 响应对象封装类
      */
-    public static <T> ResponseEntity<T> sendDelete(String url, Map<String, String> headers, Object requestBody, Class<T> responseType, Object... uriVariables) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAll(headers);
-        return sendDelete(url, httpHeaders, requestBody, responseType, uriVariables);
+    public static <T> ResponseEntity<T> sendDelete(String url, HttpHeaders headers, Object requestBody, Class<T> responseType) {
+        return send(url, HttpMethod.DELETE, new HttpEntity<>(requestBody, headers), responseType);
     }
 
-    /**
-     * 带请求头的DELETE请求调用方式
-     *
-     * @param url 请求URL
-     * @param headers 请求头参数
-     * @param requestBody 请求参数体
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendDelete(String url, HttpHeaders headers, Object requestBody, Class<T> responseType, Object... uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody, headers);
-        return sendDelete(url, requestEntity, responseType, uriVariables);
-    }
-
-    /**
-     * 带请求头的DELETE请求调用方式
-     *
-     * @param url 请求URL
-     * @param headers 请求头参数
-     * @param requestBody 请求参数体
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendDelete(String url, Map<String, String> headers, Object requestBody, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAll(headers);
-        return sendDelete(url, httpHeaders, requestBody, responseType, uriVariables);
-    }
-
-    /**
-     * 带请求头的DELETE请求调用方式
-     *
-     * @param url 请求URL
-     * @param headers 请求头参数
-     * @param requestBody 请求参数体
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendDelete(String url, HttpHeaders headers, Object requestBody, Class<T> responseType, Map<String, ?> uriVariables) {
-        HttpEntity<Object> requestEntity = new HttpEntity<Object>(requestBody, headers);
-        return sendDelete(url, requestEntity, responseType, uriVariables);
-    }
-
-    /**
-     * 自定义请求头和请求体的DELETE请求调用方式
-     *
-     * @param url 请求URL
-     * @param requestEntity 请求头和请求体封装对象
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendDelete(String url, HttpEntity<?> requestEntity, Class<T> responseType, Object... uriVariables) {
-        return restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, responseType, uriVariables);
-    }
-
-    /**
-     * 自定义请求头和请求体的DELETE请求调用方式
-     *
-     * @param url 请求URL
-     * @param requestEntity 请求头和请求体封装对象
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> sendDelete(String url, HttpEntity<?> requestEntity, Class<T> responseType, Map<String, ?> uriVariables) {
-        return restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, responseType, uriVariables);
-    }
 
     // ----------------------------------通用方法-------------------------------------------------------
 
@@ -621,26 +237,22 @@ public class HttpClientUtils {
      * @param method 请求方法类型
      * @param requestEntity 请求头和请求体封装对象
      * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，按顺序依次对应
      * @return ResponseEntity 响应对象封装类
      */
-    public static <T> ResponseEntity<T> send(String url, HttpMethod method, HttpEntity<?> requestEntity, Class<T> responseType, Object... uriVariables) {
-        return restTemplate.exchange(url, method, requestEntity, responseType, uriVariables);
+    public static <T> ResponseEntity<T> send(String url, HttpMethod method, HttpEntity<?> requestEntity, Class<T> responseType) {
+        try {
+
+            return restTemplate.exchange(url, method, requestEntity, responseType);
+
+        } catch (HttpClientErrorException e) {
+            if (String.class.equals(responseType)){
+                return ResponseEntity.status(e.getStatusCode()).headers(e.getResponseHeaders()).body((T)e.getResponseBodyAsString());
+            } else {
+                throw e;
+            }
+        }
     }
 
-    /**
-     * 通用调用方式
-     *
-     * @param url 请求URL
-     * @param method 请求方法类型
-     * @param requestEntity 请求头和请求体封装对象
-     * @param responseType 返回对象类型
-     * @param uriVariables URL中的变量，与Map中的key对应
-     * @return ResponseEntity 响应对象封装类
-     */
-    public static <T> ResponseEntity<T> send(String url, HttpMethod method, HttpEntity<?> requestEntity, Class<T> responseType, Map<String, ?> uriVariables) {
-        return restTemplate.exchange(url, method, requestEntity, responseType, uriVariables);
-    }
 
     /**
      * 获取RestTemplate实例对象，可自由调用其方法

@@ -36,6 +36,13 @@
             <version>2.5.2</version>
         </dependency>
 
+        <!-- 为Web应用程序或Servlet提供文件上传功能，Struts2和SpringMVC的文件上传组件。依赖包：Commons IO  解析：multipart/form-data-->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.4</version>
+        </dependency>
+
         <!-- 参数校验 -->
         <dependency>
             <groupId>org.hibernate</groupId>

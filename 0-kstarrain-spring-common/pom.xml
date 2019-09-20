@@ -34,6 +34,13 @@
             <version>1.9.3</version>
         </dependency>
 
+        <!-- 处理IO的工具类包，对java.io进行扩展，提供了更加方便的IO操作 -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
+
         <!-- 谷歌list<bean>转换 -->
         <dependency>
             <groupId>com.google.guava</groupId>

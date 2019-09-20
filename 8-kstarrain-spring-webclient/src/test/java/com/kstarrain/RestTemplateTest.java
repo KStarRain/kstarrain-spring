@@ -94,11 +94,9 @@ public class RestTemplateTest extends AbstractJUnit4SpringContextTests {
     @Test
     public void doGet2() {
 
-        String url = requestUrl + "?userName={userName}&key={key}";
-
-        Map<String,String> uriVariables = new HashMap();
-        uriVariables.put("userName", "董宇");
-        uriVariables.put("key", "1234qwer");
+        String url = HttpClientUtils.url(requestUrl)
+                .addParam("userName", "貂蝉")
+                .addParam("key", "1234qwer").build();
 
 
         HttpHeaders headers = HttpClientUtils.headers()
@@ -110,7 +108,7 @@ public class RestTemplateTest extends AbstractJUnit4SpringContextTests {
 
         //只有response的ContentType为application/json时会自动转换
 //        ResponseEntity<ResultDTO> responseEntity = HttpClientUtils.sendGet(url, headers, ResultDTO.class, uriVariables);
-        ResponseEntity<String> responseEntity = HttpClientUtils.sendGet(url, headers, String.class, uriVariables);
+        ResponseEntity<String> responseEntity = HttpClientUtils.sendGet(url, headers, String.class);
 
         if (responseEntity.getStatusCode() == HttpStatus.OK){
             System.out.println(responseEntity.getBody());
@@ -127,7 +125,7 @@ public class RestTemplateTest extends AbstractJUnit4SpringContextTests {
 
         HttpHeaders headers = HttpClientUtils.headers()
 //                                            .setContentType(MediaType.APPLICATION_FORM_URLENCODED)
-                                            .addCookie("testMethod","GET")
+                                            .addCookie("testMethod","POST")
                                             .addCookie("accessToken","2c81fd43-a991-4f78-bbce-21be2054431e_105502")
                                             .addCookie("key","吕布")
                                             .addParam(HttpHeaders.AUTHORIZATION, UUID.randomUUID().toString())
@@ -141,7 +139,6 @@ public class RestTemplateTest extends AbstractJUnit4SpringContextTests {
         ResponseEntity<ResultDTO> responseEntity = HttpClientUtils.sendPost(requestUrl, headers, requestBody, ResultDTO.class);
 
         if (responseEntity.getStatusCode() == HttpStatus.OK){
-            System.out.println(responseEntity.getStatusCode());
             System.out.println(JSON.toJSONString(responseEntity.getBody()));
         } else {
             System.out.println(responseEntity.getStatusCode());
@@ -153,12 +150,13 @@ public class RestTemplateTest extends AbstractJUnit4SpringContextTests {
     @Test
     public void doPost_multipart_form_data() throws UnsupportedEncodingException {
 
-
-        Map<String,String> headers = new HashMap();
-//        headers.put("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE);
-        headers.put("Cookie","testMethod=GET;accessToken=2c81fd43-a991-4f78-bbce-21be2054431e_105502");
-        headers.put("Authorization","authorization_" + UUID.randomUUID().toString());
-        headers.put("store",Base64.getEncoder().encodeToString("华为应用商店".getBytes("utf-8")));
+        HttpHeaders headers = HttpClientUtils.headers()
+//                                            .setContentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                                            .addCookie("testMethod","POST")
+                                            .addCookie("accessToken","2c81fd43-a991-4f78-bbce-21be2054431e_105502")
+                                            .addCookie("key","吕布")
+                                            .addParam(HttpHeaders.AUTHORIZATION, UUID.randomUUID().toString())
+                                            .addParam("store",Base64.getEncoder().encodeToString("华为应用商店".getBytes("utf-8"))).build();
 
 
         MultiValueMap<String, Object> requestBody = HttpClientUtils.formBody()
@@ -180,11 +178,13 @@ public class RestTemplateTest extends AbstractJUnit4SpringContextTests {
     @Test
     public void doPostJson() throws UnsupportedEncodingException {
 
-        Map<String,String> headers = new HashMap();
-        headers.put("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
-        headers.put("Cookie","testMethod=GET;accessToken=2c81fd43-a991-4f78-bbce-21be2054431e_105502");
-        headers.put("Authorization","authorization_" + UUID.randomUUID().toString());
-        headers.put("store",Base64.getEncoder().encodeToString("华为应用商店".getBytes("utf-8")));
+        HttpHeaders headers = HttpClientUtils.headers()
+//                                            .setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                                            .addCookie("testMethod","POST")
+                                            .addCookie("accessToken","2c81fd43-a991-4f78-bbce-21be2054431e_105502")
+                                            .addCookie("key","吕布")
+                                            .addParam(HttpHeaders.AUTHORIZATION, UUID.randomUUID().toString())
+                                            .addParam("store",Base64.getEncoder().encodeToString("华为应用商店".getBytes("utf-8"))).build();
 
 
         Map<String, Object> requestBody = HttpClientUtils.jsonBody()
