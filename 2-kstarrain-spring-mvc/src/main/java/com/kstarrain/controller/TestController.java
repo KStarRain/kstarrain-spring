@@ -4,13 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.kstarrain.exception.BusinessException;
 import com.kstarrain.exception.CommonErrorCode;
-import com.kstarrain.exception.ErrorCode;
 import com.kstarrain.response.ResultDTO;
 import com.kstarrain.vo.request.LoginRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -300,30 +297,5 @@ public class TestController {
             return ResponseEntity.badRequest().body(CommonErrorCode.SYSTEM_ERROR.toJSON());
         }
     }
-
-
-    @GetMapping(value = "/http/logo")
-    public ResponseEntity<JSON> getLogo(HttpServletRequest request, HttpServletResponse response) {
-
-        try {
-
-            byte[] bytes = FileUtils.readFileToByteArray(new File(readFilePath));
-
-            //ByteArrayInputStream 是内存读写流，不同于指向硬盘的流,不需要手动关闭
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
-
-
-            IOUtils.copy(inputStream,response.getOutputStream());
-            response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-
-            return ResponseEntity.ok().build();
-        } catch (BusinessException e) {
-            return ResponseEntity.badRequest().body(e.toJSON());
-        } catch (Exception e) {
-            log.error(e.getMessage(),e);
-            return ResponseEntity.badRequest().body(CommonErrorCode.SYSTEM_ERROR.toJSON());
-        }
-    }
-
 
 }

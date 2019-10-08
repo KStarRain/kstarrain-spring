@@ -1,8 +1,8 @@
 package com.kstarrain;
 
 
-import com.alibaba.fastjson.JSON;
 import com.kstarrain.utils.HttpClientUtils;
+import com.kstarrain.vo.LoginRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 
@@ -51,7 +51,7 @@ public class TestControllerHttpTest extends AbstractJUnit4SpringContextTests {
 
         ResponseEntity<String> responseEntity  = HttpClientUtils.sendGet(url, String.class);
 //        ResponseEntity<String> responseEntity  = HttpClientUtils.sendGet(url, headers, String.class);
-
+        StandardCharsets.UTF_8.name();
         System.out.println(responseEntity.getHeaders().getContentType());
         if (responseEntity.getStatusCode() == HttpStatus.OK){
             System.out.println(responseEntity.getBody());
@@ -103,17 +103,20 @@ public class TestControllerHttpTest extends AbstractJUnit4SpringContextTests {
                                 .addCookie("company","万达")
                                 .addParam(HttpHeaders.AUTHORIZATION, UUID.randomUUID().toString()).build();
 
+        LoginRequest requestBody = new LoginRequest();
+        requestBody.setUserName("董宇");
+        requestBody.setPassword("1234qwer");
 
-        Map<String, Object> requestBody = HttpClientUtils.jsonBody()
+       /* Map<String, Object> requestBody = HttpClientUtils.jsonBody()
                                                 .addParam("userName", "董宇")
-                                                .addParam("password", "1234qwer").build();
+                                                .addParam("password", "1234qwer").build();*/
 
 
         ResponseEntity<String> responseEntity = HttpClientUtils.sendPost(url, headers, requestBody, String.class);
 
         System.out.println(responseEntity.getHeaders().getContentType());
         if (responseEntity.getStatusCode() == HttpStatus.OK){
-            System.out.println(JSON.toJSONString(responseEntity.getBody()));
+            System.out.println(responseEntity.getBody());
         } else {
             System.out.println(responseEntity.getStatusCode());
             System.out.println(responseEntity.getBody());
