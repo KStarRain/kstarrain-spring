@@ -91,6 +91,8 @@ public class StudentServiceImpl implements IStudentService {
     }
 
 
+
+
     /** 注解事务 */
     @Override
     @Transactional(rollbackFor = Exception.class) //该注解放在实现类或者接口上都可以
@@ -99,7 +101,7 @@ public class StudentServiceImpl implements IStudentService {
         //插入数据
         studentDao.insertStudent(TestDataUtils.createStudent1());
 
-        int a = 5/0;
+//        int a = 5/0;
 
         //插入数据
         studentDao.insertStudent(TestDataUtils.createStudent2());
@@ -185,5 +187,22 @@ public class StudentServiceImpl implements IStudentService {
             }
         });
         System.out.println("===============断点==============");
+    }
+
+
+
+
+    @Override
+    @Transactional
+    public void propagation_annotated2(int i) {
+
+        //插入数据
+        studentDao.insertStudent(TestDataUtils.createStudent1());
+
+        //插入数据
+        studentDao.insertStudent(TestDataUtils.createStudent2());
+
+        if ( i > 1) {int a = 5/0;}
+
     }
 }

@@ -1,9 +1,7 @@
 package com.kstarrain.service;
 
 import com.kstarrain.pojo.Student;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
 import java.util.List;
 
 public interface IStudentService {
@@ -31,4 +29,9 @@ public interface IStudentService {
 
     /** 事务传播方式测试02 -- 编程式 */
     void propagation_programming02();
+
+
+    /** 事务传播方式测试02 -- 注解 */
+    void propagation_annotated2(int i);
+
 }

@@ -2,13 +2,12 @@ package com.kstarrain;
 
 import com.kstarrain.dao.StudentDao;
 import com.kstarrain.pojo.Student;
-
+import com.kstarrain.service.DataImportService;
 import com.kstarrain.service.IStudentService;
 import com.kstarrain.utils.TestDataUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -139,6 +138,22 @@ public class JdbcTemplateTest extends AbstractJUnit4SpringContextTests {
         try {
             IStudentService studentService = super.applicationContext.getBean("studentServiceImpl", IStudentService.class);
             studentService.annotatedTransaction_error();
+        } catch (Exception e) {
+            log.error(e.getMessage(),e);
+        }
+
+        System.out.println("===============================================================================");
+    }
+
+
+
+    @Test
+    public void dataImport(){
+        System.out.println("===============================================================================");
+
+        try {
+            DataImportService dataImportService = super.applicationContext.getBean(DataImportService.class);
+            dataImportService.dataImport();
         } catch (Exception e) {
             log.error(e.getMessage(),e);
         }

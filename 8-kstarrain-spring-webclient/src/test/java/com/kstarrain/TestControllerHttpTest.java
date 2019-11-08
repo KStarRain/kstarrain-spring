@@ -18,10 +18,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.MultiValueMap;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -37,10 +37,13 @@ public class TestControllerHttpTest extends AbstractJUnit4SpringContextTests {
     @Test
     public void sendGet() {
 
-        String url = HttpClientUtils.url("http://localhost:8080/mvc/http/get")
+        String url = HttpClientUtils.url("http://localhost:8080/mvc/http/get/{id}")
+                            .addParam("id",2)
                             .addParam("userName", "貂蝉")
                             .addParam("password", "1234qwer").build();
 
+        Map<String, Object> uriVariables = new HashMap<>();
+        uriVariables.put("id",1);
 
         HttpHeaders headers = HttpClientUtils.headers()
 //                                .setContentType(MediaType.APPLICATION_JSON_UTF8)
@@ -49,8 +52,8 @@ public class TestControllerHttpTest extends AbstractJUnit4SpringContextTests {
                                 .addCookie("company","万达")
                                 .addParam(HttpHeaders.AUTHORIZATION, UUID.randomUUID().toString()).build();
 
-        ResponseEntity<String> responseEntity  = HttpClientUtils.sendGet(url, String.class);
-//        ResponseEntity<String> responseEntity  = HttpClientUtils.sendGet(url, headers, String.class);
+//        ResponseEntity<String> responseEntity  = HttpClientUtils.sendGet(url, String.class);
+        ResponseEntity<String> responseEntity  = HttpClientUtils.sendGet(url, headers, String.class, uriVariables);
         StandardCharsets.UTF_8.name();
         System.out.println(responseEntity.getHeaders().getContentType());
         if (responseEntity.getStatusCode() == HttpStatus.OK){
@@ -165,6 +168,7 @@ public class TestControllerHttpTest extends AbstractJUnit4SpringContextTests {
 
         String url = "http://localhost:8080/mvc/http/postMultipart";
 
+
         HttpHeaders headers = HttpClientUtils.headers()
                                 .setContentType(MediaType.MULTIPART_FORM_DATA)
                                 .addCookie("testMethod","POST")
@@ -210,47 +214,9 @@ public class TestControllerHttpTest extends AbstractJUnit4SpringContextTests {
         }
 
 
-        /*HttpURLConnection conn = null;
-        try {
-            conn = this.jdkopenConnection(logoUrl, "GET");
-            if (conn.getResponseCode() == 200) {
-                FileUtils.copyInputStreamToFile(conn.getInputStream(),new File(copyFilePath));
-            } else {
-                System.out.println(conn.getResponseCode());
-                System.out.println(conn.getResponseMessage());
-            }
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-        } finally {
-            if (conn != null){
-                conn.disconnect();
-            }
-        }*/
-
     }
 
 
-    private HttpURLConnection jdkopenConnection(String urlStr, String method) throws IOException {
-
-
-        HttpURLConnection conn = null;
-
-        // 创建远程url连接对象
-        URL url = new URL(urlStr);
-        // 通过远程url连接对象打开连接
-        conn = (HttpURLConnection) url.openConnection();
-        // 设置连接请求方式
-        conn.setRequestMethod(method);
-        // 设置连接主机服务器超时时间：3000毫秒
-        conn.setConnectTimeout(3000);
-        // 设置读取主机服务器返回数据超时时间：3000毫秒
-        conn.setReadTimeout(3000);
-        // 默认值为：true，当前向远程服务读取数据时，设置为true，该参数可有可无
-        conn.setDoInput(true);
-
-        return conn;
-
-    }
 
 
 }

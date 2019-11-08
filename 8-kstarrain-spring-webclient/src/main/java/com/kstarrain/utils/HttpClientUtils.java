@@ -55,8 +55,22 @@ public class HttpClientUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public static <T> ResponseEntity<T> sendGet(String url, Class<T> responseType) {
-        return send(url, HttpMethod.GET, HttpEntity.EMPTY, responseType);
+        return send(url, HttpMethod.GET, HttpEntity.EMPTY, responseType, null);
     }
+
+    /**
+     * GET请求调用方式
+     *
+     * @param url 请求URL
+     * @param responseType 返回对象类型
+     * @param pathVariables url路径变量参数
+     * @return ResponseEntity 响应对象封装类
+     */
+    public static <T> ResponseEntity<T> sendGet(String url, Class<T> responseType, Map<String, ?> pathVariables) {
+        return send(url, HttpMethod.GET, HttpEntity.EMPTY, responseType, pathVariables);
+    }
+
+
 
 
     /**
@@ -68,7 +82,20 @@ public class HttpClientUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public static <T> ResponseEntity<T> sendGet(String url, HttpHeaders headers, Class<T> responseType) {
-        return send(url, HttpMethod.GET, new HttpEntity<>(headers), responseType);
+        return send(url, HttpMethod.GET, new HttpEntity<>(headers), responseType, null);
+    }
+
+    /**
+     * GET请求调用方式
+     *
+     * @param url 请求URL
+     * @param headers 请求头参数
+     * @param responseType 返回对象类型
+     * @param pathVariables url路径变量参数
+     * @return ResponseEntity 响应对象封装类
+     */
+    public static <T> ResponseEntity<T> sendGet(String url, HttpHeaders headers, Class<T> responseType, Map<String, ?> pathVariables) {
+        return send(url, HttpMethod.GET, new HttpEntity<>(headers), responseType, pathVariables);
     }
 
 
@@ -80,8 +107,21 @@ public class HttpClientUtils {
      * @return
      */
     public static <T> ResponseEntity<T> sendPost(String url, Class<T> responseType) {
-        return send(url, HttpMethod.POST, HttpEntity.EMPTY, responseType);
+        return send(url, HttpMethod.POST, HttpEntity.EMPTY,  responseType, null);
     }
+
+    /**
+     * POST请求调用方式
+     *
+     * @param url 请求URL
+     * @param responseType 返回对象类型
+     * @param pathVariables url路径变量参数
+     * @return
+     */
+    public static <T> ResponseEntity<T> sendPost(String url, Class<T> responseType, Map<String, ?> pathVariables) {
+        return send(url, HttpMethod.POST, HttpEntity.EMPTY,  responseType, pathVariables);
+    }
+
 
 
     /**
@@ -93,7 +133,21 @@ public class HttpClientUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public static <T> ResponseEntity<T> sendPost(String url, HttpHeaders headers, Class<T> responseType) {
-        return send(url, HttpMethod.POST, new HttpEntity<>(headers), responseType);
+        return send(url, HttpMethod.POST, new HttpEntity<>(headers), responseType, null);
+    }
+
+
+    /**
+     * POST请求调用方式
+     *
+     * @param url 请求URL
+     * @param headers 请求头参数
+     * @param responseType 返回对象类型
+     * @param pathVariables url路径变量参数
+     * @return ResponseEntity 响应对象封装类
+     */
+    public static <T> ResponseEntity<T> sendPost(String url, HttpHeaders headers, Class<T> responseType, Map<String, ?> pathVariables) {
+        return send(url, HttpMethod.POST, new HttpEntity<>(headers), responseType, pathVariables);
     }
 
 
@@ -106,7 +160,21 @@ public class HttpClientUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public static <T> ResponseEntity<T> sendPost(String url, Object requestBody, Class<T> responseType) {
-        return send(url, HttpMethod.POST, new HttpEntity<>(requestBody), responseType);
+        return send(url, HttpMethod.POST, new HttpEntity<>(requestBody), responseType, null);
+    }
+
+
+    /**
+     * POST请求调用方式
+     *
+     * @param url 请求URL
+     * @param requestBody 请求参数体
+     * @param responseType 返回对象类型
+     * @param pathVariables url路径变量参数
+     * @return ResponseEntity 响应对象封装类
+     */
+    public static <T> ResponseEntity<T> sendPost(String url, Object requestBody, Class<T> responseType, Map<String, ?> pathVariables) {
+        return send(url, HttpMethod.POST, new HttpEntity<>(requestBody), responseType, pathVariables);
     }
 
 
@@ -120,8 +188,23 @@ public class HttpClientUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public static <T> ResponseEntity<T> sendPost(String url, HttpHeaders headers, Object requestBody, Class<T> responseType) {
-        return send(url, HttpMethod.POST, new HttpEntity<>(requestBody, headers), responseType);
+        return send(url, HttpMethod.POST, new HttpEntity<>(requestBody, headers), responseType, null);
     }
+
+    /**
+     * POST请求调用方式
+     *
+     * @param url 请求URL
+     * @param headers 请求头参数
+     * @param requestBody 请求参数体
+     * @param responseType 返回对象类型
+     * @param pathVariables url路径变量参数
+     * @return ResponseEntity 响应对象封装类
+     */
+    public static <T> ResponseEntity<T> sendPost(String url, HttpHeaders headers, Object requestBody, Class<T> responseType, Map<String, ?> pathVariables) {
+        return send(url, HttpMethod.POST, new HttpEntity<>(requestBody, headers), responseType, pathVariables);
+    }
+
 
 
     /**
@@ -132,7 +215,20 @@ public class HttpClientUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public static <T> ResponseEntity<T> sendPut(String url, Class<T> responseType) {
-        return send(url, HttpMethod.PUT, HttpEntity.EMPTY, responseType);
+        return send(url, HttpMethod.PUT, HttpEntity.EMPTY, responseType, null);
+    }
+
+
+    /**
+     * PUT请求调用方式
+     *
+     * @param url 请求URL
+     * @param responseType 返回对象类型
+     * @param pathVariables url路径变量参数
+     * @return ResponseEntity 响应对象封装类
+     */
+    public static <T> ResponseEntity<T> sendPut(String url, Class<T> responseType, Map<String, ?> pathVariables) {
+        return send(url, HttpMethod.PUT, HttpEntity.EMPTY, responseType, pathVariables);
     }
 
 
@@ -145,8 +241,24 @@ public class HttpClientUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public static <T> ResponseEntity<T> sendPut(String url, HttpHeaders headers, Class<T> responseType) {
-        return send(url, HttpMethod.PUT, new HttpEntity<>(headers), responseType);
+        return send(url, HttpMethod.PUT, new HttpEntity<>(headers), responseType, null);
     }
+
+
+
+    /**
+     * PUT请求调用方式
+     *
+     * @param url 请求URL
+     * @param headers 请求头参数
+     * @param responseType 返回对象类型
+     * @param pathVariables url路径变量参数
+     * @return ResponseEntity 响应对象封装类
+     */
+    public static <T> ResponseEntity<T> sendPut(String url, HttpHeaders headers, Class<T> responseType, Map<String, ?> pathVariables) {
+        return send(url, HttpMethod.PUT, new HttpEntity<>(headers), responseType, pathVariables);
+    }
+
 
 
     /**
@@ -158,8 +270,23 @@ public class HttpClientUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public static <T> ResponseEntity<T> sendPut(String url, Object requestBody, Class<T> responseType) {
-        return send(url, HttpMethod.PUT, new HttpEntity<>(requestBody), responseType);
+        return send(url, HttpMethod.PUT, new HttpEntity<>(requestBody),  responseType, null);
     }
+
+
+    /**
+     * PUT请求调用方式
+     *
+     * @param url 请求URL
+     * @param requestBody 请求参数体
+     * @param responseType 返回对象类型
+     * @param pathVariables url路径变量参数
+     * @return ResponseEntity 响应对象封装类
+     */
+    public static <T> ResponseEntity<T> sendPut(String url, Object requestBody, Class<T> responseType, Map<String, ?> pathVariables) {
+        return send(url, HttpMethod.PUT, new HttpEntity<>(requestBody),  responseType, pathVariables);
+    }
+
 
 
     /**
@@ -172,7 +299,22 @@ public class HttpClientUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public static <T> ResponseEntity<T> sendPut(String url, HttpHeaders headers, Object requestBody, Class<T> responseType) {
-        return send(url, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), responseType);
+        return send(url, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), responseType, null);
+    }
+
+
+    /**
+     * PUT请求调用方式
+     *
+     * @param url 请求URL
+     * @param headers 请求头参数
+     * @param requestBody 请求参数体
+     * @param responseType 返回对象类型
+     * @param pathVariables url路径变量参数
+     * @return ResponseEntity 响应对象封装类
+     */
+    public static <T> ResponseEntity<T> sendPut(String url, HttpHeaders headers, Object requestBody, Class<T> responseType, Map<String, ?> pathVariables) {
+        return send(url, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), responseType, pathVariables);
     }
 
 
@@ -184,8 +326,23 @@ public class HttpClientUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public static <T> ResponseEntity<T> sendDelete(String url, Class<T> responseType) {
-        return send(url, HttpMethod.DELETE, HttpEntity.EMPTY, responseType);
+        return send(url, HttpMethod.DELETE, HttpEntity.EMPTY, responseType, null);
     }
+
+
+
+    /**
+     * DELETE请求调用方式
+     *
+     * @param url 请求URL
+     * @param responseType 返回对象类型
+     * @param pathVariables url路径变量参数
+     * @return ResponseEntity 响应对象封装类
+     */
+    public static <T> ResponseEntity<T> sendDelete(String url, Class<T> responseType, Map<String, ?> pathVariables) {
+        return send(url, HttpMethod.DELETE, HttpEntity.EMPTY, responseType, pathVariables);
+    }
+
 
 
     /**
@@ -197,7 +354,21 @@ public class HttpClientUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public static <T> ResponseEntity<T> sendDelete(String url, HttpHeaders headers, Class<T> responseType) {
-        return send(url, HttpMethod.DELETE, new HttpEntity<>(headers), responseType);
+        return send(url, HttpMethod.DELETE, new HttpEntity<>(headers), responseType, null);
+    }
+
+
+    /**
+     * DELETE请求调用方式
+     *
+     * @param url 请求URL
+     * @param headers 请求头参数
+     * @param responseType 返回对象类型
+     * @param pathVariables url路径变量参数
+     * @return ResponseEntity 响应对象封装类
+     */
+    public static <T> ResponseEntity<T> sendDelete(String url, HttpHeaders headers, Class<T> responseType, Map<String, ?> pathVariables) {
+        return send(url, HttpMethod.DELETE, new HttpEntity<>(headers), responseType, pathVariables);
     }
 
 
@@ -210,7 +381,21 @@ public class HttpClientUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public static <T> ResponseEntity<T> sendDelete(String url, Object requestBody, Class<T> responseType) {
-        return send(url, HttpMethod.DELETE, new HttpEntity<>(requestBody), responseType);
+        return send(url, HttpMethod.DELETE, new HttpEntity<>(requestBody), responseType, null);
+    }
+
+
+    /**
+     * DELETE请求调用方式
+     *
+     * @param url 请求URL
+     * @param requestBody 请求参数体
+     * @param responseType 返回对象类型
+     * @param pathVariables url路径变量参数
+     * @return ResponseEntity 响应对象封装类
+     */
+    public static <T> ResponseEntity<T> sendDelete(String url, Object requestBody, Class<T> responseType, Map<String, ?> pathVariables) {
+        return send(url, HttpMethod.DELETE, new HttpEntity<>(requestBody), responseType, pathVariables);
     }
 
 
@@ -224,7 +409,22 @@ public class HttpClientUtils {
      * @return ResponseEntity 响应对象封装类
      */
     public static <T> ResponseEntity<T> sendDelete(String url, HttpHeaders headers, Object requestBody, Class<T> responseType) {
-        return send(url, HttpMethod.DELETE, new HttpEntity<>(requestBody, headers), responseType);
+        return send(url, HttpMethod.DELETE, new HttpEntity<>(requestBody, headers), responseType, null);
+    }
+
+
+    /**
+     * DELETE请求调用方式
+     *
+     * @param url 请求URL
+     * @param headers 请求头参数
+     * @param requestBody 请求参数体
+     * @param responseType 返回对象类型
+     * @param pathVariables url路径变量参数
+     * @return ResponseEntity 响应对象封装类
+     */
+    public static <T> ResponseEntity<T> sendDelete(String url, HttpHeaders headers, Object requestBody, Class<T> responseType, Map<String, ?> pathVariables) {
+        return send(url, HttpMethod.DELETE, new HttpEntity<>(requestBody, headers), responseType, pathVariables);
     }
 
 
@@ -239,10 +439,14 @@ public class HttpClientUtils {
      * @param responseType 返回对象类型
      * @return ResponseEntity 响应对象封装类
      */
-    public static <T> ResponseEntity<T> send(String url, HttpMethod method, HttpEntity<?> requestEntity, Class<T> responseType) {
+    public static <T> ResponseEntity<T> send(String url, HttpMethod method, HttpEntity<?> requestEntity, Class<T> responseType, Map<String, ?> pathVariables) {
         try {
 
-            return restTemplate.exchange(url, method, requestEntity, responseType);
+            if (pathVariables == null){
+                return restTemplate.exchange(url, method, requestEntity, responseType);
+            } else {
+                return restTemplate.exchange(url, method, requestEntity, responseType, pathVariables);
+            }
 
         } catch (HttpClientErrorException e) {
             if (String.class.equals(responseType)){

@@ -8,16 +8,19 @@ import com.kstarrain.response.ResultDTO;
 import com.kstarrain.vo.request.LoginRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -41,7 +44,7 @@ public class TestController {
     private String readFilePath = "E:" + File.separator + "其他" + File.separator + "cat.jpg";
 
 
-    @GetMapping(value = "/http/get"
+    @GetMapping(value = "/http/get/{id}"
 //            ,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
 //            ,produces = "text/plain;charset=UTF-8"
             ,produces = MediaType.APPLICATION_JSON_UTF8_VALUE
@@ -49,6 +52,8 @@ public class TestController {
     @ResponseBody
     public ResponseEntity<JSON> get(HttpServletRequest request,
                                     HttpServletResponse response,
+                                    @PathVariable(value = "id",required = false) String id1,
+                                    @RequestParam(value = "id",required = false) String id2,
                                     @RequestParam(value = "userName",required = false) String userName,
                                     @RequestParam(value = "password",required = false) String password,
                                     @CookieValue(value = "testMethod",required = false) String testMethod,
@@ -65,6 +70,8 @@ public class TestController {
             System.out.println("Cookie              : accessToken=" + accessToken);
             System.out.println("Cookie              : company=" + company);
 
+            System.out.println("id1                  : " + id1);
+            System.out.println("id2                  : " + id2);
             System.out.println("userName            : " + userName);
             System.out.println("password            : " + password);
 
@@ -282,6 +289,10 @@ public class TestController {
 
             response.setContentType(contentType);
 
+            InputStream inputStream = multipartFile.getInputStream();
+            byte[] bytes = IOUtils.toByteArray(inputStream);
+            String imageBase64 = new String(Base64Utils.encode(bytes));
+            System.out.println("imageBase64:        " + imageBase64);
             /**将传入的文件复制输出到本地上*/
             FileUtils.forceMkdir(new File(directoryPath));
             String writeFilePath = directoryPath + File.separator + multipartFile.getOriginalFilename();
