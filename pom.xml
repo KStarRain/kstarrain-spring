@@ -10,18 +10,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <modules>
-        <module>0-kstarrain-spring-common</module>
-        <module>1-kstarrain-spring-bean-xml</module>
-        <module>1-kstarrain-spring-bean-annotation</module>
-        <module>2-kstarrain-spring-mvc</module>
-        <module>3-kstarrain-spring-jdbc</module>
-        <module>4-kstarrain-spring-mybatis</module>
-        <module>5-kstarrain-spring-aop</module>
-        <module>6-kstarrain-spring-redis</module>
-        <module>7-kstarrain-spring-job-task</module>
-        <module>7-kstarrain-spring-job-quartz</module>
-        <module>7-kstarrain-spring-job-elasticjob</module>
-        <module>8-kstarrain-spring-webclient</module>
+        <module>00-kstarrain-spring-common</module>
+        <module>01-kstarrain-spring-bean-xml</module>
+        <module>02-kstarrain-spring-bean-annotation</module>
+        <module>03-kstarrain-spring-mvc</module>
+        <module>04-kstarrain-spring-jdbc</module>
+        <module>05-kstarrain-spring-mybatis</module>
+        <module>06-kstarrain-spring-aop</module>
+        <module>07-kstarrain-spring-redis</module>
+        <module>08-kstarrain-spring-job-task</module>
+        <module>09-kstarrain-spring-job-quartz</module>
+        <module>10-kstarrain-spring-job-elasticjob</module>
+        <module>11-kstarrain-spring-webclient</module>
+        <module>12-kstarrain-spring-sftp</module>
+        <module>13-kstarrain-spring-rabbitmq-producer</module>
+        <module>14-kstarrain-spring-rabbitmq-consumer</module>
     </modules>
 
     <properties>

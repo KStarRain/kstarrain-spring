@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>kstarrain-spring</artifactId>
+        <groupId>com.kstarrain</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>09-kstarrain-spring-job-quartz</artifactId>
+    <packaging>war</packaging>
+
+    <dependencies>
+
+        <!-- 包含 spring对quartz的整合 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- Quartz集成需要事务依赖性 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+         <!-- Quartz   https://blog.csdn.net/defonds/article/details/49496895
+            https://blog.csdn.net/xlgdst/article/details/79104273 -->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+
+        <!-- quartz-web可视化界面  参考地址:https://blog.csdn.net/qxc1281/article/details/76359246 -->
+        <dependency>
+            <groupId>com.github.quartzweb</groupId>
+            <artifactId>quartz-web</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+
+        <!-- Spring-web依赖 (已经包含了核心依赖等)-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- common -->
+        <dependency>
+            <groupId>com.kstarrain</groupId>
+            <artifactId>00-kstarrain-spring-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+</project>
